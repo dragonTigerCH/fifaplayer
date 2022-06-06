@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팁과 노하우</title>
+</head>
+<body>
+
+<div class="container-fluid" style="width:95%">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">팁과 노하우 게시판</h6>
+        </div>
+        <div class="card-body" style="text-align:center;">
+            <div class="table-responsive">
+                <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-light">
+                    <tr>
+                        <th style="width: 79px;">번호</th>
+                        <th style="width: 500px;">제목</th>
+                        <th style="width: 160px;">글쓴이</th>
+                        <th style="width: 106px;">등록일</th>
+                        <th style="width: 110px;">조회</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="boardTip : ${boardTip}">
+                        <td style="width: 79px;" th:text="${boardTip.id}">1</td>
+                        <td style="text-align:left;width: 500px;" ><a th:href="@{/board/detail/{boardId}(boardId=${boardTip.id})}" th:text="${boardTip.title}"></a></td>
+                        <td style="width: 160px;" th:text="${boardTip.member.nickname}"></td>
+                        <td style="width: 106px;" th:text="${#temporals.format(boardTip.regdate,'yyyy-MM-dd HH:mm')}">61</td>
+                        <td style="width: 110px;" th:text="${boardTip.hit}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form class="form-inline d-flex justify-content-end" th:action="@{/board/tip}" method="get">
+            <div class="form-group mx-sm-3 mb-2" >
+                <label for="searchText" class="sr-only">검색</label>
+                <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">
+                <button type="submit" class="btn btn-light">검색</button>
+            </div>
+        </form>
+    </div>
+
+    <!--페이징-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${1 == boardTip.pageable.pageNumber+1} ? 'disabled' ">
+                <a class="page-link" href="#" th:href="@{/board/tip(page=${boardTip.pageable.pageNumber-1},searchText=${param.searchText})}" >Previous</a>
+            </li>
+            <li class="page-item"  th:classappend="${i == boardTip.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startPage,endPage)}">
+                <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/board/tip(page=${i-1},searchText=${param.searchText})}">1</a>
+            </li>
+
+
+            <!--<li class="page-item" th:classappend="${boardTip.totalPages == boardTip.pageable.pageNumber+1} ? 'disabled' ">-->
+            <li class="page-item" th:classappend="${boardTip.hasNext()} ? '':'disabled' ">
+                <a  class="page-link" href="#" th:href="@{/board/tip(page=${boardTip.pageable.pageNumber+1},searchText=${param.searchText})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <!--버튼-->
+    <div  style="text-align:right;">
+
+    <a class="btn btn-primary" th:href="@{/board/form(choice='tip')}" style="text-align:right !important;">글쓰기</a>
+    </div>
+    <br>
+
+</div>
+</body>
+</html>

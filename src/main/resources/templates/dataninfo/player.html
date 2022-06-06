@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>선수 상세정보</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="container-fluid" style="width:90%">
+
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <form th:action="@{/dataninfo/comparison}" th:object="${searchForm}" method="get">
+                <input type="hidden" th:field="*{season}">
+                <input type="hidden" th:field="*{position}">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="text-lg font-weight-bold text-info text-uppercase mt-1 mr-3">선수 이름</span>
+                            <input type="text" class="form-control" aria-describedby="button-addon2" th:field="*{searchPlayer}">
+                            <button class="btn btn-outline-secondary"  id="button-addon2">검색</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-body" style="text-align:center;">
+            <div class="row">
+                <div class="col-md-5">
+                <img th:src="@{/img/datan/}+${datan.img_file}" width="70%">
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <ul class="list-group" style="color:#005f59;">
+                                <li class="list-group-item">
+                                    <img class="d-inline mb-1 mr-1" th:src="@{/img/season/}+${datan.season.attachFile}"><span class="text-lg" th:text="${datan.season.name}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <p class="text-lg" th:text="${datan.player.name}"></p>
+                                </li>
+                                <li class="list-group-item">
+                                    <p class="text-lg" th:text="${datan.player.country}"></p>
+                                </li>
+                                <li class="list-group-item">
+                                    <p class="text-lg" th:text="${datan.player.birthday}"></p>
+                                </li>
+                                <li class="list-group-item">
+                                    <p class="text-lg" th:text="${datan.player.position}"></p>
+                                </li>
+                                <li class="list-group-item" >
+                                    <p class="text-lg" th:text="|${datan.player.height}cm / ${datan.player.weight}kg / ${datan.player.bodyform}|"></p>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="text-lg">급여</span><span class="ml-2 text-lg" th:text="${datan.ability.salaryup}"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group" id="PlayerDatan">
+                                <li class="list-group-item">
+                                    <span>오버롤</span><span class="ml-2 text-lg" th:text="${datan.ability.overall}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>스피드</span><span class="ml-2 text-lg" th:text="${datan.ability.speed}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>슛</span><span class="ml-2 text-lg" th:text="${datan.ability.shooting}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>패스</span><span class="ml-2 text-lg" th:text="${datan.ability.pass}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>드리블</span><span class="ml-2 text-lg" th:text="${datan.ability.dribble}"></span>
+                                </li>
+                                <li class="list-group-item" >
+                                    <span>디펜스</span><span class="ml-2 text-lg" th:text="${datan.ability.defence}"></span>
+                                </li>
+                                <li class="list-group-item" >
+                                    <span>피지컬</span><span class="ml-2 text-lg" th:text="${datan.ability.physical}"></span>
+                                </li>
+                                <li class="list-group-item" >
+                                    <span>블로킹</span><span class="ml-2 text-lg" th:text="${datan.ability.blocking}"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <span class="text-info ml-2">평점을 입력해주세요</span>
+    <span class="m-0 font-weight-bold text-secondary">( <span class="text-success" th:text="${score}"></span> / 5.0 )</span>
+    <form class="mb-3" name="myform" id="myform" method="post" th:action="@{/rating}">
+    <input type="hidden" name="datan_id" id="datan_id" th:value="${datan.id}">
+        <fieldset class="mr-3">
+            <input type="radio" name="score" value="5" id="rate1">
+            <label for="rate1">★</label>
+            <input type="radio" name="score" value="4" id="rate2">
+            <label for="rate2">★</label>
+            <input type="radio" name="score" value="3" id="rate3">
+            <label for="rate3">★</label>
+            <input type="radio" name="score" value="2" id="rate4">
+            <label for="rate4">★</label>
+            <input type="radio" name="score" value="1" id="rate5">
+            <label for="rate5">★</label>
+        </fieldset>
+        <input onclick="rating(); return false;" type="button" value="입력" class="btn btn-success mb-3">
+    </form>
+
+    <div class="card shadow mb-4" id="commentList" th:fragment="datan_commentList">
+        <div class="card-header py-3">
+            <span class="m-0 font-weight-bold text-success">나도 한마디</span>
+            <span class="m-0 font-weight-bold text-secondary float-right">코멘트(<span class="text-danger" th:text="${datan_comments.getTotalElements()}"></span>)</span>
+        </div>
+        <div class="card-body" >
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+
+                    </thead>
+                    <tbody id="tableBody">
+
+                    <tr th:each="comments : ${datan_comments}" th:id="comments" >
+                        <td style="width: 15%; text-align:center;"><i th:if="${comments.parentNum != 0}" class="fas fa-long-arrow-alt-right mr-3"></i><span th:text="${comments.member.nickname}"></span></td>
+                        <td style="width: 70%" th:text="${comments.content}">Donna Snider</td>
+                        <td style="width: 15%; text-align:center;">
+                            <div th:if="${comments.member.id} == ${member.id}">
+                            <button class="btn btn-info btn-sm" th:onclick="|updateComments(${comments.id},this)|" th:if="${comments.isDel_yn == false}">수정</button>
+                            <!-- Button trigger modal -->
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" th:data-target="|#exampleModal${comments.id}|" th:if="${comments.isDel_yn == false}">삭제</button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="|exampleModal${comments.id}|" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">댓글 삭제</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            댓글을 완전히 삭제할까요?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            <button type="button" class="btn btn-danger" th:onclick="|deleteComments(${comments.id})|">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="d-block" th:text="${#temporals.format(comments.regdate,'yyyy-MM-dd HH:mm')}"></span>
+                            <a class="d-inline" th:id="${comments.id}">답글</a>
+                        </td>
+                    </tr>
+                    <tr style="text-align:center;" id="replyForm">
+                        <td style="width: 15%"><i class="fas fa-long-arrow-alt-right mr-3 d-none" id="replyIcon"></i><span sec:authentication="principal.member.nickname" ></span></td>
+                        <td style="width: 70%"   th:object="${datan_commentForm}">
+                            <div class="form-floating" >
+                                <textarea class="form-control" th:field="*{content}" th:errorclass="is-invalid" placeholder="Comments" id="content1" style="height: 100px" maxlength='255'></textarea>
+                                <div class="invalid-feedback"  th:errors="*{content}">
+                                    댓글 내용 오류
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 15%">
+                            <button type="button" class="btn btn-success btn-circle btn-lg" onclick="comments(); return false;" >
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    <nav aria-label="Page navigation example" >
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${1 == datan_comments.pageable.pageNumber+1} ? 'disabled' ">
+                <a class="page-link" href="#" th:href="@{/dataninfo/player/{playerId}(playerId=${datan.id},page=${datan_comments.pageable.pageNumber-1})}" >Previous</a>
+            </li>
+            <li class="page-item"  th:classappend="${i == datan_comments.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startPage,endPage)}">
+                <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/dataninfo/player/{playerId}(playerId=${datan.id},page=${i-1})}">1</a>
+            </li>
+
+            <li class="page-item" th:classappend="${datan_comments.totalPages == datan_comments.pageable.pageNumber+1} ? 'disabled' ">
+            <li class="page-item" th:classappend="${datan_comments.hasNext()} ? '':'disabled' ">
+                <a  class="page-link" href="#" th:href="@{/dataninfo/player/{playerId}(playerId=${datan.id},page=${datan_comments.pageable.pageNumber+1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    </div>
+
+    <script  th:inline="javascript">
+
+       function rating() {
+
+                var star = $('input:radio[name=score]:checked').val();
+                if(star == undefined){
+                    alert("평점을 입력해 주세요.");
+                    return false;
+                }
+
+                var ratingSaveForm = $('#myform').serialize()
+
+                 $.ajax({
+                            url: "/rating",
+                            type: "POST",
+                            data: ratingSaveForm,
+                        }).done(function(result){
+                                   if(result == 'ok'){
+                                        alert("평점이 입력되었습니다.");
+                                        location.reload();
+                                   } else if (result == 'duplication'){
+                                        alert("이미 평점을 입력하셨습니다.");
+                                        location.reload();
+                                   }
+                      });
+
+       }
+
+       function deleteComments(cmId){
+                console.log(cmId)
+                var delId = '#exampleModal'+cmId;
+
+                $(delId).modal('hide')
+                /*<![CDATA[*/
+                var datanId = "[[${datan.id}]]"
+                console.log(datanId);
+                /*]]>*/
+                var url = 'http://localhost:8017/dataninfo/player/'+datanId;
+
+                $.ajax({
+                            url: "/dataninfo/comments/delete/"+cmId,
+                            type: "POST",
+                            data: {"datanId":datanId},
+                   //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(result){
+                                   if(result == 'noReply'){
+                                        console.log('삭제');
+                                        $(location).attr('href', url);
+                                   } else if (result == 'containReply'){
+                                        $(location).attr('href', url);
+                                        console.log('업데이트');
+
+                                   } else if (result == 'deleteAll'){
+                                        $(location).attr('href', url);
+                                        console.log('부모댓글 삭제');
+                                   }
+                      });
+       }
+
+       function updateComments(cmId,me){
+
+           var updateComments_tr = me.closest("tr");
+           var updateComments_tr_td = updateComments_tr.childNodes[2].nextElementSibling;
+           var updateComments_tr_td_content = updateComments_tr.childNodes[2].nextElementSibling.innerText;
+
+           updateComments_tr_td.innerHTML = '<textarea class="form-control" id="updateCm'+cmId+'" maxlength="255">'+updateComments_tr_td_content+'</textarea>';
+           me.innerHTML = '완료';
+
+            console.log(cmId);
+           me.setAttribute("onclick" , 'complete('+ cmId +',this)');
+
+
+         }
+
+          function complete(cmId,me){
+
+            var updateId = '#updateCm'+cmId;
+            var uContent = $(updateId).val();
+            var select_tr = me.closest('tr');
+            var select_td = select_tr.childNodes[2].nextElementSibling;
+
+
+             var datan_commentsUpdateForm = {
+                     "update_id" : cmId,
+                     "content" : uContent
+                     };
+
+
+             $.ajax({
+                            url: "/dataninfo/comments/update/"+cmId,
+                            type: "POST",
+                            data: datan_commentsUpdateForm,
+                             //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(result){
+                                   if(result == 'ok'){
+                                    select_td.removeChild(select_td.childNodes[0]);
+                                    select_td.innerHTML = uContent;
+                                    me.innerHTML = '수정';
+                                    me.setAttribute("onclick" , 'updateComments('+ cmId +',this)');
+                                   } else {
+                                    alert("댓글 수정에 실패하였습니다.");
+                                   }
+                      });
+
+         }
+
+
+
+         function comments(replyId) {
+
+                //공백,null 체크 정규식
+                var blank_pattern = /^\s+|\s+$/g;
+
+                   if($('#content1').val().replace(blank_pattern,"") == "") {
+                    alert("댓글을 입력해주세요. * 공백 불가");
+                    $('#content1').focus();
+                   return false;
+                   }
+
+                    var datan_commentForm = {
+                     "datan_id" : $('#datan_id').val(),
+                     "content" : $('#content1').val()
+                     }
+                if(replyId == undefined){
+                      $.ajax({
+                            url: "/dataninfo/player",
+                            type: "POST",
+                           // dataType:"text", //응답 타입
+                            data: datan_commentForm,
+                          //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(fragment){
+                               $('#commentList').replaceWith(fragment);
+                               $('#content1').val("");
+                               console.log(fragment);
+                               console.log($("#dataTable").find('a'));
+                      });
+
+                } else {
+
+                         $.ajax({
+                            url: "/dataninfo/player/"+replyId,
+                            type: "POST",
+                           // dataType:"text", //응답 타입
+                            data: datan_commentForm,
+                           //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(fragment){
+                               $('#commentList').replaceWith(fragment);
+                               $('#content1').val("");
+                               console.log(fragment);
+                               console.log($("#dataTable").find('a'));
+                      });
+                     console.log("대댓글");
+
+                }
+
+
+         }
+        window.onload = function(){
+
+            //var dataTable = document.getElementById("commentList");
+            //var dataTable2 = dataTable.querySelectorAll("a");
+            //console.log(dataTable2);
+
+
+          //document.addEventListener("click", function(e) {
+           //console.log(e);
+          //});
+
+
+        }
+
+
+        $(document).ready(function() {
+
+            $("#commentList").find('a').on('click',function(){
+                var bt = $("#commentList").find('a');
+                var replyId = $(this).attr('id');
+                var replyForm = $('#replyForm');
+
+                //누른 a태그 빼고 모든 active 클래스제거
+                $("#commentList").find('a').not($(this)).removeClass('active');
+                //액티브클래스가있으면
+                if($(this).hasClass('active')){
+                    console.log("클릭된 답글")
+                    $(this).removeClass('active')
+                    $('#replyIcon').addClass('d-none');
+                    $('#tableBody').append(replyForm);
+                    replyForm.find('button').attr("onclick","comments(); return false;");
+                    $('#content1').val("");
+                }else {
+                    console.log("처음클릭답글")
+                    $('#replyIcon').removeClass('d-none');
+                    $(this).addClass('active');
+                    $(this).closest('tr').after(replyForm);
+                    console.log($(this).closest('tr'));
+                    replyForm.find('button').attr("onclick","comments("+replyId+"); return false;");
+                    $('#content1').val("");
+                }
+
+            });
+
+
+           var datans = $('.ml-2');
+            //능력치 색 분배
+            for (let i=0; i < datans.length; i++){
+                if(datans.eq(i).text() <= 150 && datans.eq(i).text() >= 101){
+                    datans.eq(i).addClass("font-weight-bold text-warning")
+                } else if (datans.eq(i).text() <= 100 && datans.eq(i).text() >= 91){
+                    datans.eq(i).addClass("font-weight-bold text-success")
+                } else if (datans.eq(i).text() <= 90 && datans.eq(i).text() >= 81){
+                    datans.eq(i).addClass("font-weight-bold text-info")
+                } else if (datans.eq(i).text() <= 80 && datans.eq(i).text() >= 71){
+                     datans.eq(i).addClass("font-weight-bold text-primary")
+                } else if (datans.eq(i).text() <= 70 && datans.eq(i).text() >= 61){
+                     datans.eq(i).addClass("font-weight-bold text-secondary")
+                } else if (datans.eq(i).text() <= 60 && datans.eq(i).text() >= 31){
+                     datans.eq(i).addClass("font-weight-bold text-danger")
+                }
+            }
+
+
+
+
+        });
+
+
+    </script>
+
+
+</div>
+
+
+</body>
+</html>

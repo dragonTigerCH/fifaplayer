@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+</head>
+<body>
+
+<div class="container-fluid" style="width:70%">
+    <form action="/board/edit"  method="post">
+        <input type="hidden" name="id" th:value="${board.id}">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">게시글 수정</h6>
+        </div>
+        <div class="card-body">
+            <select  class="form-select form-select-lg mb-3" name="type">
+                <option th:value="${board.type}" th:text="${board.type} == 'tip' ? '팁과 노하우' : '자유'"></option>
+            </select>
+
+            <br>
+            <div class="table-responsive">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">제목</label>
+                    <input type="text" name="title" class="form-control" id="exampleFormControlInput1"
+                    th:value="${board.title}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">내용</label>
+                    <textarea class="form-control"  name="content"  id="exampleFormControlTextarea1" rows="3" th:text="${board.content}"></textarea>
+                </div>
+            </div>
+        </div>
+
+    </div>
+        <div style="text-align:right;">
+        <input type="submit" class="btn btn-primary" value="작성완료">
+        <input class="btn btn-primary" onclick="history.go(-1)" type="button" value="취소">
+        </div>
+    </form>
+</div>
+</body>
+</html>

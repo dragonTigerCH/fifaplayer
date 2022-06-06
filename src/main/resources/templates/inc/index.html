@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>FP Home</title>
+</head>
+<body>
+<!-- Begin Page Content -->
+<div class="container-fluid" >
+    <link rel="stylesheet" href="startbootstrap/css/top.css">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">FP Home</h1>
+
+    </div>
+
+    <!--카드-->
+
+    <!------ Include the above in your HEAD tag ---------->
+    <div class="row" >
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+            <div class="MultiCarousel-inner">
+                <div class="item" th:each="datan : ${datans}">
+                    <div class="pad15">
+                    <a th:href="@{/dataninfo/player/}+${datan.id}" style="text-decoration:none;color:black;">
+                        <img th:src="@{/img/datan/}+${datan.img_file}" width="100%">
+                        <img th:src="@{/img/season/}+${datan.season.attachFile}" class="mb-1">
+                        <span class="lead" th:text="${datan.player.name}" style="color:#005f59;"></span>
+                    </a>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-info leftLst">
+                <i class="fa-solid fa-angle-left"></i>
+            </button>
+            <button class="btn btn-info rightLst">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!--카드 끝-->
+
+
+    <!-- Content Row -->
+
+    <div class="row">
+
+        <!-- Area 실시간 선수 평가 -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card border-light mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-dark">실시간 선수 평가</h6>
+                    <a th:href="@{/dataninfo/evaluation}" class="text-decoration-none dropdown-header p-0" >더보기+</a>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <a href="#" class="text-decoration-none">
+                        <table class="table table-hover" id="dataTable"  cellspacing="0">
+                            <tbody>
+                                <tr th:each="datan_comment : ${datan_comments}" th:attr="onclick=|playerEvaluation(${datan_comment.datan.id})|" >
+                                    <td width="20%">
+                                        <img width="18px;" th:src="@{/img/season/}+${datan_comment.datan.season.attachFile}">
+                                        <span th:text="${datan_comment.datan.player.name}" style="color:#005f59;"></span>
+                                    </td>
+                                    <td width="5%" th:text="${datan_comment.datan.ability.salaryup}" class="text-dark"></td>
+                                    <td width="5%" th:text="${datan_comment.datan.player.position}"
+                                        th:classappend="|${(datan_comment.datan.player.position == 'MF' ? 'text-success' : '')} ${(datan_comment.datan.player.position == 'DF' ? 'text-info' : '')}
+                                        ${(datan_comment.datan.player.position == 'GK' ? 'text-warning' : '')}
+                                        ${(datan_comment.datan.player.position == 'FW' ? 'text-danger' : '')}|"></td>
+                                    <td width="5%" th:text="${datan_comment.datan.overall}" class="text-primary"></td>
+                                    <td  th:text="${#strings.abbreviate(datan_comment.content,50)}"></td>
+                                    <td width="10%" th:text="${#temporals.format(datan_comment.regdate,'yyyy-MM-dd HH:mm')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                &lt;!&ndash; Card Header - Dropdown &ndash;&gt;
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">화제의 게시글</h6>
+
+                </div>
+                &lt;!&ndash; Card Body &ndash;&gt;
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        &lt;!&ndash;<canvas id="myPieChart"></canvas>&ndash;&gt;
+                    </div>
+                    <div class="mt-4 text-center small">
+                        &lt;!&ndash;<span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Referral
+                        </span>&ndash;&gt;
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Area 자유 게시판 -->
+        <div class="col-lg-6 mb-4">
+
+            <div class="card border-light mb-4">
+                <div class="card-header py-3" >
+                    <h6 class="m-0 font-weight-bold text-dark">Boards</h6>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <a href="#" class="text-decoration-none">
+                            <table class="table table-hover" id="dataTable1"  cellspacing="0">
+                                <tbody>
+                                <tr th:each="board : ${boardList}" th:attr="onclick=|board(${board.id})|"  >
+                                    <td width="22%">
+                                        <span th:text="${board.type == 'free' ? '자유' : '팁'}" class="mr-2" style="color:#3d85c6;"></span>
+                                        <span th:text="${#strings.abbreviate(board.title,30)}"></span>
+                                    </td>
+                                    <td width="5%" th:text="${#temporals.format(board.regdate,'yyyy-MM-dd HH:mm')}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <!-- Area 자유 게시판 -->
+        <div class="col-lg-6 mb-4">
+
+            <div class="card border-light mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">Comments</h6>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <a href="#" class="text-decoration-none">
+                            <table class="table table-hover" id="dataTable2"  cellspacing="0">
+                                <tbody>
+                                <tr th:each="board_comment : ${board_comments}" th:attr="onclick=|boardComment(${board_comment.board.id})|" >
+                                    <td width="40%">
+                                        <span th:text="${board_comment.member.nickname}" class="mr-2" style="color:#4f4cd6;"></span>
+                                        <span th:text="${#strings.abbreviate(board_comment.content,25)}"></span>
+                                    </td>
+                                    <td width="10%" th:text="${#temporals.format(board_comment.regdate,'yyyy-MM-dd HH:mm')}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function playerEvaluation(datan_id){
+              location.href = "http://localhost:8017/dataninfo/player/"+datan_id;
+        }
+        function board(board_id){
+              location.href = "http://localhost:8017/board/detail/"+board_id;
+        }
+        function boardComment(boardComment_id){
+              location.href = "http://localhost:8017/board/detail/"+boardComment_id;
+        }
+
+       $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+
+    });
+    </script>
+</div>
+<!-- /.container-fluid -->
+
+
+</body>
+</html>

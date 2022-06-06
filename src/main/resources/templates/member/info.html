@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="row m-1">
+
+    <br>
+    <div class="container-fluid col-md-6">
+        <div class="card shadow mb-4 ">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">내 정보</h6>
+            </div>
+            <div class="card-body">
+                <form th:object="${memberEditForm}" method="post" th:action="@{/member/info}">
+                    <input type="hidden" th:field="*{id}">
+                    <p class="m-0 font-weight-bold text-info">이메일</p>
+                    <div class="form-group" >
+                        <input type="email" class="form-control form-control-user " readonly="readonly" id="email"
+                               th:field="*{email}">
+                    </div>
+                    <p class="m-0 font-weight-bold text-info">닉네임</p>
+                    <div class="form-group" >
+                        <input type="text" class="form-control form-control-user" id="nickname"
+                               th:field="*{nickname}" th:errorclass="is-invalid">
+                    </div>
+                    <div class="mb-3 alert alert-danger small" th:errors="*{nickname}">
+                        <p>닉네임 오류 메시지</p>
+                    </div>
+                    <p class="m-0 font-weight-bold text-info">비밀번호</p>
+                    <div class="form-group" >
+                        <input type="password" class="form-control form-control-user" id="password"
+                               th:field="*{password}" th:errorclass="is-invalid">
+                    </div>
+                    <div class="mb-3 alert alert-danger small" th:errors="*{password}">
+                        <p>비밀번호 오류 메시지</p>
+                    </div>
+                    <p class="m-0 font-weight-bold text-info">가입일</p>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user" readonly="readonly" id="createdDate"
+                               th:field="*{createdDate}">
+                    </div>
+                    <p class="m-0 font-weight-bold text-info">회원 등급</p>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user" readonly="readonly" id="auth"
+                               th:field="*{auth}">
+                    </div>
+                    <input type="submit" class="btn btn-info" value="수정하기">
+                </form>
+            </div>
+        </div>
+        <a class="btn btn-info" th:href="@{/member/new_password}">비밀번호 변경하기</a>
+        <a class="btn btn-danger" href="#" th:onclick="withDrawal()">회원 탈퇴</a>
+
+        <form action="/member/withdrawal" id="withDrawal" method="post"></form>
+        <!--SecurityContextHolder.clearContext();-->
+    </div>
+
+
+    <!-- Tab을 구성할 영역 설정-->
+    <div class="col-md-6">
+        <!-- Tab 영역 태그는 ul이고 클래스는 nav와 nav-tabs를 설정한다. -->
+        <ul class="nav nav-tabs">
+            <!-- Tab 아이템이다. 태그는 li과 li > a이다. li태그에 active는 현재 선택되어 있는 탭 메뉴이다. -->
+
+            <!-- a 태그의 href는 아래의 tab-content 영역의 id를 설정하고 data-toggle 속성을 tab으로 설정한다. -->
+            <li><a href="#myboards" data-toggle="tab" class="m-0 font-weight-bold text-primary">MY BOARDS</a></li>
+            &nbsp;
+            &nbsp;
+            <li><a href="#myDatan_comments" data-toggle="tab" class="m-0 font-weight-bold text-primary">MY DATAN COMMENTS</a></li>
+            &nbsp;
+            &nbsp;
+            <li><a href="#myBoard_comments" data-toggle="tab" class="m-0 font-weight-bold text-primary">MY BOARD COMMENTS</a></li>
+        </ul>
+        <!-- Tab이 선택되면 내용이 보여지는 영역이다. -->
+        <!-- 태그는 div이고 class는 tab-content로 설정한다. -->
+        <div class="tab-content">
+            <!-- 각 탭이 선택되면 보여지는 내용이다. 태그는 div이고 클래스는 tab-pane이다. -->
+            <!-- active 클래스는 현재 선택되어 있는 탭 영역이다. -->
+            <div class="tab-pane fade" id="myboards">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <p class="m-0 font-weight-bold text-success">내가 쓴 게시글</p>
+                    </div>
+                    <div class="card-body" style="text-align:center;">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th style="width: 79px;">번호</th>
+                                    <th style="width: 500px;">제목</th>
+                                    <th style="width: 160px;">글쓴이</th>
+                                    <th style="width: 300px;">등록일</th>
+                                    <th style="width: 110px;">조회</th>
+                                    <th style="width: 79px;">추천</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="board : ${myWritingBoards}">
+                                    <td style="width: 79px;" th:text="${board.id}">1</td>
+                                    <td style="text-align:left;width: 500px;" ><a th:href="@{/board/detail/{boardId}(boardId=${board.id})}" th:text="${board.title}"></a></td>
+                                    <td style="width: 160px;" th:text="${board.member.nickname}"></td>
+                                    <td style="width: 300px;" th:text="${#temporals.format(board.regdate,'yyyy-MM-dd HH:mm')}">61</td>
+                                    <td style="width: 110px;" th:text="${board.hit}"></td>
+                                    <td style="width: 79px;" th:text="${board.recommend}"></td>
+
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${1 == myWritingBoards.pageable.pageNumber+1} ? 'disabled' ">
+                                <a class="page-link" href="#" th:href="@{/member/info(page=${myWritingBoards.pageable.pageNumber-1})}" >Previous</a>
+                            </li>
+                            <li class="page-item"  th:classappend="${i == myWritingBoards.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startBoardPage,endBoardPage)}">
+                                <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/member/info(page=${i-1})}">1</a>
+                            </li>
+
+
+                            <li class="page-item" th:classappend="${myWritingBoards.hasNext()} ? '':'disabled' ">
+                                <a  class="page-link" href="#" th:href="@{/member/info(page=${myWritingBoards.pageable.pageNumber+1})}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+
+            <div class="tab-pane fade" id="myDatan_comments">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <p class="m-0 font-weight-bold text-success"> 내가 쓴 선수 댓글</p>
+                    </div>
+                    <div class="card-body" style="text-align:center;">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th >선수</th>
+                                    <th >평가</th>
+                                    <th>작성시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="datan_comment : ${myDatan_Comments}">
+                                    <td width="80%" colspan="2" >
+                                        <a th:href="@{/dataninfo/player/{playerId}(playerId=${datan_comment.datan.id})}"  style="text-decoration:none;color:black;" >
+                                            <div class="row">
+                                                <div class="col-lg-2 col-sm-12">
+                                                    <img th:src="@{/img/datan/}+${datan_comment.datan.img_file}" width="50%">
+                                                </div>
+                                                <div class="col-lg-10 col-sm-12" align="left">
+                                                    <img th:src="@{/img/season/}+${datan_comment.datan.season.attachFile}">
+                                                    <span th:text="${datan_comment.datan.player.name}" class="bg-gray-100"></span>
+                                                    <p class="m-0"><span th:text="${datan_comment.content}"></span></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td width="20%" class="text-center">
+                                        <div th:text="${#temporals.format(datan_comment.regdate,'yyyy-MM-dd HH:mm')}">시간</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${1 == myDatan_Comments.pageable.pageNumber+1} ? 'disabled' ">
+                                <a class="page-link" href="#" th:href="@{/member/info(page=${myDatan_Comments.pageable.pageNumber-1})}" >Previous</a>
+                            </li>
+                            <li class="page-item"  th:classappend="${i == myDatan_Comments.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startDatanCommentPage,endDatanCommentPage)}">
+                                <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/member/info(page=${i-1})}">1</a>
+                            </li>
+
+
+                            <li class="page-item" th:classappend="${myDatan_Comments.hasNext()} ? '':'disabled' ">
+                                <a  class="page-link" href="#" th:href="@{/member/info(page=${myDatan_Comments.pageable.pageNumber+1})}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="myBoard_comments">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <p class="m-0 font-weight-bold text-success">내가 쓴 게시글 댓글</p>
+                    </div>
+                    <div class="card-body" style="text-align:center;">
+                        <div class="table-responsive">
+                            <table class="table table-bordered"  width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>게시글</th>
+                                    <th>게시글 댓글 내용</th>
+                                    <th>작성시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="board_comment : ${myBoard_Comments}">
+                                    <td width="80%" colspan="2">
+                                        <a th:href="@{/board/detail/{boardId}(boardId=${board_comment.board.id})}"  style="text-decoration:none;color:black;" >
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-12" align="left">
+                                                    <span th:text="|원문제목 : ${board_comment.board.title}|" class="small"></span>
+                                                    <p class="m-0"><span th:text="${board_comment.content}"></span></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td width="20%" class="text-center">
+                                        <div th:text="${#temporals.format(board_comment.regdate,'yyyy-MM-dd HH:mm')}">시간</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${1 == myBoard_Comments.pageable.pageNumber+1} ? 'disabled' ">
+                                <a class="page-link" href="#" th:href="@{/member/info(page=${myBoard_Comments.pageable.pageNumber-1})}" >Previous</a>
+                            </li>
+                            <li class="page-item"  th:classappend="${i == myBoard_Comments.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startBoardCommentPage,endBoardCommentPage)}">
+                                <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/member/info(page=${i-1})}">1</a>
+                            </li>
+
+
+                            <li class="page-item" th:classappend="${myBoard_Comments.hasNext()} ? '':'disabled' ">
+                                <a  class="page-link" href="#" th:href="@{/member/info(page=${myBoard_Comments.pageable.pageNumber+1})}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+</div>
+
+
+    <script th:inline="javascript">
+       $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+
+
+    });
+     function withDrawal(){
+             var result = confirm("정말로 회원 탈퇴 처리하시겠습니까?");
+
+              if(result){
+                document.getElementById('withDrawal').submit();
+                console.log("성공");
+              }else{
+
+              }
+        }
+
+    </script>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>선수 등록</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="container-fluid" style="width:90%">
+    <div style="text-align:center;" class="mb-4 d-none" id="pb">
+    <button class="btn btn-primary" type="button" onclick="player(this)" >선수 등록</button>
+    </div>
+    <div class="card shadow mb-4" id="player">
+        <div class="card-header py-3 border-left-secondary">
+            <h6 class="m-0 font-weight-bold text-primary d-inline">선수 등록</h6>
+            <button class="btn btn-primary float-right btn-sm" onclick="playerClose()">닫기</button>
+        </div>
+
+        <div class="card-body border-bottom-secondary" >
+            <form th:action="@{/admin/player/new}" th:object="${playerForm}" method="post">
+            <div class="form-group is-invalid">
+                <h6 class="mb-2 font-weight-bold text-dark">이름</h6>
+                <input type="text" class="form-control form-control-user" id="name"
+                       th:field="*{name}" th:errorclass="is-invalid"
+                       placeholder="이름 ex) 박지성, 디디에 드로그바">
+            </div>
+            <div class="invalid-feedback mb-3" th:errors="*{name}">
+                <p>이름 오류 메시지</p>
+            </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">신장(키)</h6>
+                <input type="number" class="form-control form-control-user" id="height"  th:field="*{height}"
+                       th:errorclass="is-invalid"    placeholder="신장(키)은 130cm이상 250cm이하만 입력가능합니다.">
+            </div>
+            <div class="invalid-feedback mb-3" th:errors="*{height}">
+                <p>신장(키) 오류 메시지</p>
+            </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">몸무게</h6>
+                <input type="number" class="form-control form-control-user" id="weight"  th:field="*{weight}"
+                       th:errorclass="is-invalid"    placeholder="몸무게는 50kg이상 200kg이하만 입력가능합니다.">
+            </div>
+            <div class="invalid-feedback mb-3" th:errors="*{weight}">
+                <p>몸무게 오류 메시지</p>
+            </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">체형</h6>
+                <input type="text" class="form-control form-control-user" id="bodyform"  th:field="*{bodyform}"
+                       th:errorclass="is-invalid"    placeholder="체형 ex) 마름,보통,건장 만 입력 가능합니다.">
+            </div>
+            <div class="invalid-feedback mb-3" th:errors="*{bodyform}">
+                <p>체형 오류 메시지</p>
+            </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">생년월일</h6>
+                <input type="text" class="form-control form-control-user"  th:field="*{birthday}"
+                       th:errorclass="is-invalid" id="birthday" placeholder="생년월일 ex) 1961.03.26">
+            </div>
+                <div class="invalid-feedback mb-3" th:errors="*{birthday}">
+                    <p>생년월일 오류 메시지</p>
+                </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">국적</h6>
+                <input type="text" class="form-control form-control-user"  th:field="*{country}"
+                       th:errorclass="is-invalid" id="country" placeholder="국적 ex) 도미니카 공화국">
+            </div>
+                <div class="invalid-feedback mb-3" th:errors="*{country}">
+                    <p>국적 오류 메시지</p>
+                </div>
+            <div class="form-group">
+                <h6 class="mb-2 font-weight-bold text-dark">포메이션</h6>
+                <input type="text" class="form-control form-control-user"  th:field="*{position}"
+                       th:errorclass="is-invalid"  id="fomation" placeholder="포지션 ex) FW / MF / DF / GK">
+            </div>
+                <div class="invalid-feedback mb-3" th:errors="*{position}">
+                    <p>포메이션 오류 메시지</p>
+                </div>
+
+
+                <input class="btn btn-primary float-right ml-2" type="submit" value="입력">
+                <input class="btn btn-primary float-right" type="reset" value="리셋">
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <script  th:inline="javascript">
+
+    function playerClose() {
+        $('#pb').removeClass("d-none")
+        $('#player').addClass("d-none")
+    }
+
+    function player(d) {
+         $('#pb').addClass("d-none")
+        $('#player').removeClass("d-none")
+    }
+
+
+    $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+
+    });
+
+
+    </script>
+</div>
+</body>
+
+</html>

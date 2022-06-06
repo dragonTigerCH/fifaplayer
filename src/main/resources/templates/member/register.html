@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>FP - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/startbootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/startbootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+    <!--카드-->
+    <link rel="stylesheet" href="/startbootstrap/css/top.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <style>
+        .field-error {
+           border-color:#dc3545;
+           color:#dc3545;
+           margin-bottom: 1rem !important
+        }
+
+
+
+    </style>
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
+                            </div>
+                            <form class="user" th:action="@{/member/register}" method="post" id="frm"  th:object="${memberSaveForm}" >
+
+                                <div class="col-lg-12">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h4>기본정보입력</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            회원가입을 위해서 이메일 인증이 진행되며, 인증번호를 입력해야 회원가입이 완료됩니다.
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" id="email"
+                                           th:field="*{email}"
+                                           th:errorclass="field-error"
+                                           placeholder="이메일 주소">
+                                </div>
+
+                                    <div class="mb-3 alert alert-danger small"  th:errors="*{email}">
+                                        <p>이메일 주소 오류 메시지</p>
+                                    </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-user" id="nickname"  th:field="*{nickname}"
+                                           th:errorclass="field-error"
+                                            placeholder="닉네임">
+                                </div>
+                                    <div class="mb-3 alert alert-danger small" th:errors="*{nickname}">
+                                        <p>닉네임 오류 메시지</p>
+                                    </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user"  th:field="*{password}"
+                                           th:errorclass="field-error"
+                                           id="exampleInputPassword" placeholder="비밀번호">
+                                    <div class="mb-3 alert alert-danger small" th:errors="*{password}">
+                                        <p>비밀번호 오류 메시지</p>
+                                    </div>
+                                </div>
+                                <input type="radio" name="auth" value="ROLE_ADMIN"> ADMIN
+                                <input type="radio" name="auth" value="ROLE_USER" checked="checked"> USER <br>
+                                <hr>
+                                <input href="#" type="submit" class="btn btn-info btn-user btn-block" id="checkEmailNickname" required oninput="check()" value="가입하기">
+
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="/forgot_password">비밀번호 찾기</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/login">로그인</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/">홈으로</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--&lt;!&ndash; Bootstrap core JavaScript&ndash;&gt;
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    &lt;!&ndash; Custom scripts for all pages&ndash;&gt;
+    <script src="js/sb-admin-2.min.js"></script>-->
+
+</body>
+<script >
+
+
+
+        function emailCheck() {
+
+                  $.ajax ({
+                  url : "/member/emailCheck",
+                  method : "get",
+                  data : {"email" : $("#email").val()},
+                      success : function(result) {
+                            if(result == "1") {
+                                $('.id_already').css("display","inline-block");
+                                 $('.id_ok').css("display", "none");
+
+                            }else if(result == "0"){
+                               $('.id_ok').css("display","inline-block");
+                                $('.id_already').css("display", "none");
+
+                            }
+                      }
+
+                  })
+
+        }
+        function nicknameCheck() {
+                    $.ajax ({
+                  url : "/member/nicknameCheck",
+                  method : "get",
+                  data : {"nickname" : $("#nickname").val()},
+                      success : function(result) {
+
+                           if(result == "1") {
+                               $('.id_already2').css("display","inline-block");
+                               $('.id_ok2').css("display", "none");
+
+                            }else if(result == "0"){
+                               $('.id_ok2').css("display","inline-block");
+                               $('.id_already2').css("display", "none");
+                            }
+                      }
+
+                  })
+        }
+
+
+</script>
+
+</html>

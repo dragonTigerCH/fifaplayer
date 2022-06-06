@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>선수 데이터 생성</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="container-fluid" style="width:90%">
+
+
+    <div style="text-align:center;" class="mb-4 d-none" id="cb">
+        <button class="btn btn-primary " type="button" onclick="create(this)" >선수 데이터 생성</button>
+    </div>
+    <div class="card shadow mb-4" id="create">
+        <div class="card-header py-3 border-left-success">
+            <h6 class="m-0 font-weight-bold text-primary d-inline">선수 데이터 생성</h6>
+            <button class="btn btn-primary float-right btn-sm" onclick="createClose()">닫기</button>
+        </div>
+        <div class="card-body border-bottom-success" >
+
+            <form th:action="@{/admin/datan/new}" th:object="${datanForm}" method="post" enctype="multipart/form-data">
+
+                <div class="container-fluid is-invalid">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <p class="text-lg font-weight-bold text-success text-uppercase mb-1">선수 목록</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div th:each="player : ${players}" class="d-inline is-invalid" >
+
+                                <input type="radio" th:field="*{player}" th:value="${player.name}"
+                                       class="btn-check"  th:id="|success-outlined${player.id}|" autocomplete="off" >
+                                <label class="btn btn-outline-success" th:for="|success-outlined${player.id}|" th:text="${player.name}">Checked success radio</label>
+
+                            </div>
+                            <div class="invalid-feedback mb-3" th:errors="*{player}">
+                                <p>선수 선택 오류 메시지</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <p class="text-lg font-weight-bold text-danger text-uppercase mb-1">시즌 목록</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div th:each="season : ${seasons}" class="d-inline is-invalid" >
+                                <input type="radio" class="btn-check" th:field="*{season}"
+                                       th:value="${season.name}" th:id="|danger-outlined${season.id}|" autocomplete="off">
+                                <label class="btn btn-outline-danger" th:for="|danger-outlined${season.id}|" th:text="${season.name}">Danger radio</label>
+                            </div>
+                            <div class="invalid-feedback mb-3" th:errors="*{season}">
+                                <p>시즌 선택 오류 메시지</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">급여</h6>
+                            <input type="number" class="form-control form-control-user" id="salaryup"  th:field="*{salaryup}" th:errorclass="is-invalid"
+                                       placeholder="급여 ex) * 5~30 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{salaryup}">
+                            <p>급여 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">스피드</h6>
+                            <input type="number" class="form-control form-control-user" id="speed"  th:field="*{speed}" th:errorclass="is-invalid"
+                                   placeholder="스피드 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{speed}">
+                            <p>스피드 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">슛</h6>
+                            <input type="number" class="form-control form-control-user" id="shooting"  th:field="*{shooting}" th:errorclass="is-invalid"
+                                   placeholder="슛 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{shooting}">
+                            <p>슛 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">패스</h6>
+                            <input type="number" class="form-control form-control-user" id="pass"  th:field="*{pass}" th:errorclass="is-invalid"
+                                   placeholder="패스 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{pass}">
+                            <p>패스 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">드리블</h6>
+                            <input type="number" class="form-control form-control-user" id="dribble"  th:field="*{dribble}" th:errorclass="is-invalid"
+                                   placeholder="드리블 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{dribble}">
+                            <p>드리블 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">수비</h6>
+                            <input type="number" class="form-control form-control-user" id="defence"  th:field="*{defence}" th:errorclass="is-invalid"
+                                   placeholder="수비 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{defence}">
+                            <p>수비 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">피지컬</h6>
+                            <input type="number" class="form-control form-control-user" id="physical"  th:field="*{physical}" th:errorclass="is-invalid"
+                                   placeholder="피지컬 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{physical}">
+                            <p>피지컬 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">블로킹</h6>
+                            <input type="number" class="form-control form-control-user" id="blocking"  th:field="*{blocking}" th:errorclass="is-invalid"
+                                   placeholder="블로킹 ex) * 10~150 * ">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{blocking}">
+                            <p>블로킹 오류 메시지</p>
+                        </div>
+                        <div class="form-group is-invalid">
+                            <h6 class="mb-2 font-weight-bold text-dark">소속 클럽</h6>
+                            <input type="text" class="form-control form-control-user"  th:field="*{club}"
+                                   th:errorclass="is-invalid" id="club" placeholder="소속 클럽 ex) 레알 마드리드">
+                        </div>
+                        <div class="invalid-feedback mb-3" th:errors="*{club}">
+                            <p>소속 클럽 오류 메시지</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">선수 이미지</label>
+                            <input class="form-control" type="file" id="formFile" th:field="*{img_file}"> <!--th:field="*{attachFile}"-->
+                        </div>
+
+                        <input class="btn btn-primary float-right ml-2" type="submit" value="입력">
+                        <input class="btn btn-primary float-right" type="reset" value="리셋">
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <script  th:inline="javascript">
+
+
+     function createClose() {
+        $('#cb').removeClass("d-none")
+        $('#create').addClass("d-none")
+    }
+
+    function create(d) {
+        $('#cb').addClass("d-none")
+        $('#create').removeClass("d-none")
+    }
+
+    $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+
+
+
+
+
+
+        $("input:checkbox").on('click', function() {
+
+        $(this).toggleClass("active")
+        if($(this).hasClass("active") ){
+                $(this).addClass("checked");
+            } else {
+                $(this).removeClass("checked");
+            }
+        });
+
+
+
+    });
+
+
+    </script>
+</div>
+</body>
+
+</html>

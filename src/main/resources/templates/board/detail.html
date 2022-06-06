@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 작성</title>
+</head>
+<body>
+
+<div class="container-fluid" style="width:95%">
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h4 class="m-0 font-weight-bold text-black" th:text="${board.title}"></h4>
+            </div>
+            <div class="card-body">
+                <small class="m-0 font-weight-bold text-secondary" th:text="${board.type} == 'tip' ? '팁과 노하우 게시판' : '자유 게시판'"></small>
+                <hr>
+                <div class="card-body" th:text="${board.content}">
+
+                </div>
+
+            </div>
+            <hr>
+
+        </div>
+
+
+    <div style="text-align:right;" class="mb-3">
+        <a class="btn btn-primary" th:if="${board.type}=='tip'" th:href="@{/board/tip}">목록</a>
+        <a class="btn btn-primary" th:if="${board.type}=='free'"  th:href="@{/board/free}">목록</a>
+        <a class="btn btn-info" th:href="@{/board/edit(id=${board.id})}">수정</a>
+        <form th:action="@{/board/delete}" method="post" class="d-inline" id="delfrm">
+            <input type="hidden" th:value="${board.id}" name="deleteId">
+            <a class="btn btn-danger" href="#" th:onclick="deleteBoard()">삭제</a>
+
+        </form>
+    </div>
+
+    <!--댓글-->
+    <input type="hidden" name="board_id" id="board_id" th:value="${board.id}">
+    <div class="card shadow mb-4" id="commentList" th:fragment="board_commentList">
+        <div class="card-header py-3">
+            <span class="m-0 font-weight-bold text-success">나도 한마디</span>
+            <span class="m-0 font-weight-bold text-secondary float-right">코멘트(<span class="text-danger" th:text="${board_comments.getTotalElements()}"></span>)</span>
+        </div>
+        <div class="card-body" >
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+
+                    </thead>
+                    <tbody id="tableBody">
+
+                    <tr th:each="comments : ${board_comments}" th:id="comments">
+                        <td style="width: 15%; text-align:center;"><i th:if="${comments.parentNum != 0}" class="fas fa-long-arrow-alt-right mr-3"></i><span th:text="${comments.member.nickname}"></span></td>
+                        <td style="width: 70%" th:text="${comments.content}">Donna Snider</td>
+                        <td style="width: 15%; text-align:center;">
+                            <div th:if="${comments.member.id} == ${member.id}">
+                                <button class="btn btn-info btn-sm" th:onclick="|updateComments(${comments.id},this)|" th:if="${comments.isDel_yn == false}">수정</button>
+                                <!-- Button trigger modal -->
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" th:data-target="|#exampleModal${comments.id}|" th:if="${comments.isDel_yn == false}">삭제</button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="|exampleModal${comments.id}|" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">댓글 삭제</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            댓글을 완전히 삭제할까요?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            <button type="button" class="btn btn-danger" th:onclick="|deleteComments(${comments.id})|">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="d-block" th:text="${#temporals.format(comments.regdate,'yyyy-MM-dd HH:mm')}"></span>
+                            <a class="d-inline" th:id="${comments.id}">답글</a>
+                        </td>
+                    </tr>
+                    <tr style="text-align:center;" id="replyForm">
+                        <td style="width: 15%"><i class="fas fa-long-arrow-alt-right mr-3 d-none" id="replyIcon"></i><span sec:authentication="principal.member.nickname" ></span></td>
+                        <td style="width: 70%"   th:object="${board_commentForm}">
+                            <div class="form-floating" >
+                                <textarea class="form-control" th:field="*{content}" th:errorclass="is-invalid" placeholder="Comments" id="content1" style="height: 100px" maxlength='255'></textarea>
+                                <div class="invalid-feedback"  th:errors="*{content}">
+                                    댓글 내용 오류
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 15%">
+                            <button type="button" class="btn btn-success btn-circle btn-lg" onclick="comments(); return false;">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" >
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${1 == board_comments.pageable.pageNumber+1} ? 'disabled' ">
+                    <a class="page-link"  th:href="@{/board/detail/{boardId}(boardId=${board.id},page=${board_comments.pageable.pageNumber-1})}" >Previous</a>
+                </li>
+                <li class="page-item"  th:classappend="${i == board_comments.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startPage,endPage)}">
+                    <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/board/detail/{boardId}(boardId=${board.id},page=${i-1})}">1</a>
+                </li>
+
+                <li class="page-item" th:classappend="${board_comments.totalPages == board_comments.pageable.pageNumber+1} ? 'disabled' ">
+                <li class="page-item" th:classappend="${board_comments.hasNext()} ? '':'disabled' ">
+                    <a  class="page-link"  th:href="@{/board/detail/{boardId}(boardId=${board.id},page=${board_comments.pageable.pageNumber+1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!--댓글 End-->
+
+    
+
+
+    <script  th:inline="javascript">
+          function deleteBoard(){
+          var result = confirm("게시글 삭제 처리하시겠습니까?");
+
+              if(result){
+                document.getElementById('delfrm').submit();
+              }else{
+
+              }
+
+          }
+
+
+
+          function deleteComments(cmId){
+                console.log(cmId)
+                var delId = '#exampleModal'+cmId;
+
+                $(delId).modal('hide')
+                /*<![CDATA[*/
+                var boardId = "[[${board.id}]]"
+                console.log(boardId);
+                /*]]>*/
+                var url = 'http://localhost:8017/board/detail/'+boardId;
+
+                $.ajax({
+                            url: "/board/comments/delete/"+cmId,
+                            type: "POST",
+                            data: {"boardId":boardId},
+                            //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(result){
+                                   if(result == 'noReply'){
+                                        console.log('삭제');
+                                        $(location).attr('href', url);
+                                   } else if (result == 'containReply'){
+                                        $(location).attr('href', url);
+                                        console.log('업데이트');
+
+                                   } else if (result == 'deleteAll'){
+                                        $(location).attr('href', url);
+                                        console.log('부모댓글 삭제');
+                                   }
+                      });
+       }
+
+       function updateComments(cmId,me){
+
+           var updateComments_tr = me.closest("tr");
+           var updateComments_tr_td = updateComments_tr.childNodes[2].nextElementSibling;
+           var updateComments_tr_td_content = updateComments_tr.childNodes[2].nextElementSibling.innerText;
+
+           updateComments_tr_td.innerHTML = '<textarea class="form-control" id="updateCm'+cmId+'" maxlength="255">'+updateComments_tr_td_content+'</textarea>';
+           me.innerHTML = '완료';
+
+            console.log(cmId);
+           me.setAttribute("onclick" , 'complete('+ cmId +',this)');
+
+
+         }
+
+          function complete(cmId,me){
+
+            var updateId = '#updateCm'+cmId;
+            var uContent = $(updateId).val();
+            var select_tr = me.closest('tr');
+            var select_td = select_tr.childNodes[2].nextElementSibling;
+
+
+             var board_commentsUpdateForm = {
+                     "update_id" : cmId,
+                     "content" : uContent
+                     };
+
+
+             $.ajax({
+                            url: "/board/comments/update/"+cmId,
+                            type: "POST",
+                            data: board_commentsUpdateForm,
+                           //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(result){
+                                   if(result == 'ok'){
+                                    select_td.removeChild(select_td.childNodes[0]);
+                                    select_td.innerHTML = uContent;
+                                    me.innerHTML = '수정';
+                                    me.setAttribute("onclick" , 'updateComments('+ cmId +',this)');
+                                   } else {
+                                    alert("댓글 수정에 실패하였습니다.");
+                                   }
+                      });
+
+         }
+
+
+
+         function comments(replyId) {
+
+                //공백,null 체크 정규식
+                var blank_pattern = /^\s+|\s+$/g;
+
+                   if($('#content1').val().replace(blank_pattern,"") == "") {
+                    alert("댓글을 입력해주세요. * 공백 불가");
+                    $('#content1').focus();
+                   return false;
+                   }
+
+                    var board_commentForm = {
+                     "board_id" : $('#board_id').val(),
+                     "content" : $('#content1').val()
+                     }
+                if(replyId == undefined){
+                      $.ajax({
+                            url: "/board/detail",
+                            type: "POST",
+                           // dataType:"text", //응답 타입
+                            data: board_commentForm,
+                             //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(fragment){
+                               $('#commentList').replaceWith(fragment);
+                               $('#content1').val("");
+                               console.log(fragment);
+                               console.log($("#dataTable").find('a'));
+                      });
+
+                } else {
+
+                         $.ajax({
+                            url: "/board/detail/"+replyId,
+                            type: "POST",
+                           // dataType:"text", //응답 타입
+                            data: board_commentForm,
+                            //        beforeSend: function (jqXHR, settings) {
+                   //        var header = $("meta[name='_csrf_header']").attr("content");
+                   //        var token = $("meta[name='_csrf']").attr("content");
+                   //       jqXHR.setRequestHeader(header, token);
+                   //        }
+                        }).done(function(fragment){
+                               $('#commentList').replaceWith(fragment);
+                               $('#content1').val("");
+                               console.log(fragment);
+                               console.log($("#dataTable").find('a'));
+                      });
+                     console.log("대댓글");
+
+                }
+
+
+         }
+
+        $(document).ready(function() {
+
+            $("#commentList").find('a').on('click',function(){
+                var bt = $("#commentList").find('a');
+                var replyId = $(this).attr('id');
+                var replyForm = $('#replyForm');
+
+                //누른 a태그 빼고 모든 active 클래스제거
+                $("#commentList").find('a').not($(this)).removeClass('active');
+                //액티브클래스가있으면
+                if($(this).hasClass('active')){
+                    console.log("클릭된 답글")
+                    $(this).removeClass('active')
+                    $('#replyIcon').addClass('d-none');
+                    $('#tableBody').append(replyForm);
+                    replyForm.find('button').attr("onclick","comments(); return false;");
+                    $('#content1').val("");
+                }else {
+                    console.log("처음클릭답글")
+                    $('#replyIcon').removeClass('d-none');
+                    $(this).addClass('active');
+                    $(this).closest('tr').after(replyForm);
+                    replyForm.find('button').attr("onclick","comments("+replyId+"); return false;");
+                    $('#content1').val("");
+                }
+
+            });
+    });
+
+
+    </script>
+
+
+</div>
+</body>
+</html>

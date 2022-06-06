@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>시즌 등록</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="container-fluid" style="width:90%">
+
+
+
+    <div style="text-align:center;" class="mb-4 d-none" id="sb">
+        <button class="btn btn-primary" type="button" onclick="season(this)" >시즌 등록</button>
+    </div>
+    <div class="card shadow mb-4 " id="season">
+        <div class="card-header py-3 border-left-info">
+            <h6 class="m-0 font-weight-bold text-primary d-inline">시즌 등록</h6>
+            <button class="btn btn-primary float-right btn-sm" onclick="seasonClose()">닫기</button>
+        </div>
+        <div class="card-body border-bottom-info" >
+            <form th:action="@{/admin/season/new}" th:object="${seasonForm}" method="post" enctype="multipart/form-data">
+                <div class="form-group is-invalid">
+                    <h6 class="mb-2 font-weight-bold text-dark">시즌 이름</h6>
+                    <input type="text" class="form-control form-control-user" th:field="*{name}" th:errorclass="is-invalid"
+                           placeholder="시즌 이름 ex)T.O.P , ICON , Team K LEAGUE , Multi-League Chapions">
+                </div>
+                <div class="invalid-feedback mb-3" th:errors="*{name}">
+                    <p>시즌 오류 메시지</p>
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label text-dark font-weight-bold">시즌 로고</label>
+                    <input class="form-control" type="file" id="formFile" th:field="*{attachFile}"> <!--th:field="*{attachFile}"-->
+                </div>
+                <input class="btn btn-primary float-right ml-2" type="submit" value="입력">
+                <input class="btn btn-primary float-right" type="reset" value="리셋">
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <script  th:inline="javascript">
+
+
+     function seasonClose() {
+        $('#sb').removeClass("d-none")
+        $('#season').addClass("d-none")
+    }
+
+    function season(d) {
+        $('#sb').addClass("d-none")
+        $('#season').removeClass("d-none")
+    }
+
+    $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+
+    });
+
+
+    </script>
+</div>
+</body>
+
+</html>

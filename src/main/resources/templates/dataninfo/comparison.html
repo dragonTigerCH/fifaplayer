@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: tc(~{::title},~{::div})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>선수비교</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+
+
+<body>
+<div class="container-fluid" style="width:90%">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">선수 검색</h6>
+        </div>
+        <div class="card-body" style="text-align:center;">
+            <form th:action="@{/dataninfo/comparison}" th:object="${searchForm}" method="get">
+
+                <div class="container-fluid is-invalid">
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <p class="text-lg font-weight-bold text-danger text-uppercase mb-1">시즌 목록</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div th:each="season : ${seasons}" class="d-inline is-invalid" >
+                                <input type="checkbox" class="btn-check" th:field="*{season}"
+                                       th:value="${season.name}" th:id="|danger-outlined${season.id}|" autocomplete="off">
+                                <label class="btn btn-outline-danger" th:for="|danger-outlined${season.id}|" th:text="${season.name}">Danger checkbox</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <p class="text-lg font-weight-bold text-warning text-uppercase mb-1">포지션</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div  class="d-inline">
+                                <input type="checkbox" class="btn-check" th:field="*{position}" value="FW"
+                                       id="position1" autocomplete="off">
+                                <label class="btn btn-outline-warning" for="position1" >FW</label>
+                                <input type="checkbox" class="btn-check" th:field="*{position}" value="MF"
+                                       id="position2" autocomplete="off">
+                                <label class="btn btn-outline-warning" for="position2" >MF</label>
+                                <input type="checkbox" class="btn-check" th:field="*{position}" value="DF"
+                                       id="position3" autocomplete="off">
+                                <label class="btn btn-outline-warning" for="position3" >DF</label>
+                                <input type="checkbox" class="btn-check" th:field="*{position}" value="GK"
+                                       id="position4" autocomplete="off">
+                                <label class="btn btn-outline-warning" for="position4" >GK</label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <p class="text-lg font-weight-bold text-info text-uppercase mb-1">선수 검색</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div  class="d-inline">
+                                <input type="text" class="form-control form-control-user" name="searchPlayer"
+                                       th:value="${param.searchPlayer}" id="searchPlayer" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    <input class="btn btn-primary float-right ml-2" type="submit" value="검색">
+                    <input class="btn btn-primary float-right" type="reset" value="초기화">
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">선수 비교</h6>
+        </div>
+        <div class="card-body" style="text-align:center;">
+
+                <div class="container-fluid is-invalid">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th class="pb-5">선수</th>
+                                <th colspan="2">
+                                    <div class="row pt-3" id="bt">
+                                        <div class="col-md-4">
+                                            <span class="d-block">오버롤</span>
+                                                <button class="btn btn-white" id="d.overall">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <span>급여
+                                                <button class="btn btn-white d-inline" id="d.salaryup">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </span>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <span>스피드
+                                                <button class="btn btn-white d-inline" id="d.speed">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </span>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>슈팅
+                                                <button class="btn btn-white d-inline" id="d.shooting">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>패스
+                                                <button class="btn btn-white d-inline" id="d.pass">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>드리블
+                                                <button class="btn btn-white d-inline" id="d.dribble">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>디펜스
+                                                <button class="btn btn-white d-inline" id="d.defence">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>피지컬
+                                                <button class="btn btn-white d-inline" id="d.physical">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p>블로킹
+                                                <button class="btn btn-white d-inline" id="d.blocking">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </button>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody th:fragment="fragment-datanValue" id="datanTable">
+                            <tr th:each="datan : ${datans}">
+                                <input type="hidden"  th:value="${datan.id}">
+                                <td colspan="2" style="width: 30%" >
+                                    <a th:href="@{/dataninfo/player/{datanId}(datanId=${datan.id})}"  style="text-decoration:none;color:#005f59;"><img th:src="@{/img/season/}+${datan.season.attachFile}"/>
+                                    <span th:text="${datan.player.name}"></span></a>
+                                </td>
+                                <td style="width: 70%">
+                                    <div class="row">
+                                        <div class="col-md-4" th:text="${datan.overall}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.salaryup}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.speed}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.shooting}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.pass}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.dribble}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.defence}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.physical}">
+
+                                        </div>
+                                        <div class="col-md-1" th:text="${datan.ability.blocking}">
+
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+        <!--페이징-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${1 == datans.pageable.pageNumber+1} ? 'disabled' ">
+                        <a class="page-link" href="#" th:href="@{/dataninfo/comparison(page=${datans.pageable.pageNumber-1},position=${param.position},season=${param.season},searchPlayer=${param.searchPlayer})}" >Previous</a>
+                    </li>
+                    <li class="page-item"  th:classappend="${i == datans.pageable.pageNumber+1} ? 'disabled' "  th:each=" i : ${#numbers.sequence(startPage,endPage)}">
+                        <a th:if="${i != 0}" class="page-link" href="#" th:text="${i}" th:href="@{/dataninfo/comparison(page=${i-1},position=${param.position},season=${param.season},searchPlayer=${param.searchPlayer})}">1</a>
+                    </li>
+
+                    <!--<li class="page-item" th:classappend="${datans.totalPages == datans.pageable.pageNumber+1} ? 'disabled' ">-->
+                    <li class="page-item" th:classappend="${datans.hasNext()} ? '':'disabled' ">
+                        <a  class="page-link" href="#" th:href="@{/dataninfo/comparison(page=${datans.pageable.pageNumber+1},position=${param.position},season=${param.season},searchPlayer=${param.searchPlayer})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--페이징 end-->
+    </div>
+
+
+    <script  th:inline="javascript">
+
+
+
+
+
+    $(document).ready(function() {
+
+
+
+        $("#bt").find('button').on('click',function(){
+            var bt = $("#bt").find('button');
+
+            bt.not($(this)).find('i:eq(1)').addClass('fas fa-caret-up')
+            bt.not($(this)).find('i:eq(0)').addClass('fas fa-caret-down')
+
+            //datan에 id 배열로 만드는 로직
+            var datans =/*[[${datans}]]*/
+
+            var datanData = [];
+            console.log(datans.content.length);
+            <!--datans 객체의 content 를 꺼내서 보내야 한다 페이징처리를하면서 객체가 한번더 감싸져서 오기때문에-->
+            for (var i=0; i < datans.content.length ; i++){
+                 datanData.push(datans.content[i].id);
+            }
+
+            var dataInfo = $(this).attr('id');
+            var orderBy = "";
+
+           if ($(this).find('i:eq(0)').hasClass('fas fa-caret-down')) {
+
+                $(this).find('i:eq(0)').removeClass();
+                $(this).find('i:eq(1)').addClass('fas fa-caret-up');
+
+                 orderBy = "desc";
+                 console.log(datanData);
+                 console.log(dataInfo);
+                $.ajax({
+                    url: "/dataninfo/comparison/orderby",
+                    type: "GET",
+                    //dataType:"json", //응답 타입
+                    data: {"datanData":datanData,
+                           "dataInfo": dataInfo,
+                           "orderBy":orderBy
+                           },
+                }).done(function(fragment){
+                       $('#datanTable').replaceWith(fragment);
+                });
+
+            } else if ($(this).find('i:eq(1)').hasClass('fas fa-caret-up')) {
+
+                $(this).find('i:eq(0)').addClass('fas fa-caret-down');
+                $(this).find('i:eq(1)').removeClass();
+
+                orderBy = "asc";
+                console.log(datanData);
+                console.log(dataInfo);
+                $.ajax({
+                    url: "/dataninfo/comparison/orderby",
+                    type: "GET",
+                    //dataType:"json", //응답 타입
+                    data: {"datanData":datanData,
+                           "dataInfo": dataInfo,
+                           "orderBy":orderBy
+                           },
+                }).done(function(fragment){
+                       $('#datanTable').replaceWith(fragment);
+                });
+
+            }
+
+        });
+
+
+
+
+        $("input:checkbox").on('click', function() {
+
+        $(this).toggleClass("active")
+        if($(this).hasClass("active") ){
+                $(this).addClass("checked");
+            } else {
+                $(this).removeClass("checked");
+            }
+        });
+
+
+
+    });
+
+
+    </script>
+</div>
+</body>
+
+</html>
