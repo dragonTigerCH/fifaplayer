@@ -82,7 +82,7 @@ class Datan_CommentsServiceTest {
         Datan datan = datanRepository.findById(savedDatanId).orElse(null);
         Datan_CommentsForm commentForm = new Datan_CommentsForm(datan.getId(), "테스트 댓글1");
         Datan_CommentsForm replyForm = new Datan_CommentsForm(datan.getId(), "테스트 댓글1의 댓글");
-
+        //테스트
         //when
         //댓글
         Datan_Comments comment = datan_commentsService.save(null, commentForm, new PrincipalDetails(member));
