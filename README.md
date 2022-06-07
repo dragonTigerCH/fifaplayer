@@ -67,6 +67,7 @@ form : request form를 관리한다.
 service : 정의한 business logic 호출 순서를 관리한다.    
 repository : domain + JPA/QueryDSL를 관리한다.    
 
+
 ### JPA & QueryDSL (ORM)
 객체 중심 domain 설계 및 반복적인 CRUD 작업을 대체해 비즈니스 로직에 집중한다. • JPA : 반복적인 CRUD 작업을 대체해 간단히 DB에서 데이터를 조회한다.
 
@@ -105,4 +106,9 @@ Gmail의 SMTP 서버 설정과
 정의한 business logic에 대한 테스트 코드를 작성했습니다. 
 
 ![Junit](https://user-images.githubusercontent.com/97586086/172299660-948e1129-55c8-45f3-b195-f72115f0b2a9.png)
+
+### 프로젝트를 만들면서의 시행착오
+무엇보다 무한댓글로직을 만들면서 고생했던 기억이있다.   
+해서 해당로직을 블로그에 정리해두었다.    
+[게시판 댓글, 대댓글(무한댓글) 로직](https://velog.io/@yoho98/%EA%B2%8C%EC%8B%9C%EA%B8%80-%EB%8C%93%EA%B8%80-%EB%8C%80%EB%8C%93%EA%B8%80%EB%AC%B4%ED%95%9C%EB%8C%93%EA%B8%80-%EB%A1%9C%EC%A7%81)
 
