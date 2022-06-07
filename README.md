@@ -25,7 +25,7 @@ SMTP를 사용하여 비밀번호 찾기
 ![내정보 수정 및 내가 쓴 댓글,게시글](https://user-images.githubusercontent.com/97586086/172291851-b32ccfe4-3743-4e90-98a2-41e10c50e2fb.png)
 
 ### 5. 관리자만 등록 할수있는 선수 데이터들
-관리자가 등록한 선수,시즌으로 종합적인 데이터를 만들어서 다른시즌 같은 선수로 만들수있게 설계
+관리자가 등록한 선수,시즌으로 종합적인 데이터를 만들어서 다른시즌 같은 선수로 만들수있게 설계 - 기본적인 유효성 검증(Validation)
 ![선수 시즌 데이터 등록](https://user-images.githubusercontent.com/97586086/172293757-ec4e7ef5-6a12-437e-b3c2-2e5714ba0ede.png)
 
 ### 6. 선수 실시간 평가 및 검색
@@ -90,6 +90,10 @@ Datan_CommentsRepositoryCustomImpl (QueryDSL Implements Class)
 Security 설정을 추가해 인가된 사용자만 특정 URL에 접근할 수 있도록 제한한다. 
 Anonymous 가 접근할 수 있어야 하는 API는 permitAll()을 선언했습니다.
 또한 ROLE_USER, ROLE_ADMIN 권한 별 URL 제한했습니다.
+
+### SMTP (Google)
+Gmail의 SMTP 서버 설정과   
+구글 앱 비밀번호를 통하여 회원가입, 비밀번호 찾기에 대한 인증번호를 메일에 담아 보냈습니다.
 
 ### OAuth2.0 (Login)
 
