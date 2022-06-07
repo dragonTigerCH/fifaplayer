@@ -44,3 +44,60 @@ SMTP를 사용하여 비밀번호 찾기
 기본적인 게시글 CRUD 및 페이징처리
 ![게시글 CRUD 및 댓글](https://user-images.githubusercontent.com/97586086/172296477-46543d0c-7351-4477-ba8f-442e52f533b2.png)
 
+### 프로젝트 구조
+
+Spring Boot로 개발하였으며,
+사용한 기술스택은 다음과 같습니다. 
+• Spring Boot   
+• Spring Security (Security)   
+• H2 (RDB)  
+• JPA & QueryDSL (ORM)   
+• OAuth2.0 (Login)   
+• JUnit (Test)    
+• thymeleaf (template)    
+
+config : security, oauth, querydsl 관련 기능들을 관리한다.    
+exception : custom exception message를 관리한다.  
+embeddable : jpa Embeddable 관리    
+converter : boolean db컬럼 관리    
+web    
+controller : 사용자 요청 관리한다.    
+form : request form를 관리한다.    
+service : 정의한 business logic 호출 순서를 관리한다.    
+repository : domain + JPA/QueryDSL를 관리한다.    
+
+### JPA & QueryDSL (ORM)
+객체 중심 domain 설계 및 반복적인 CRUD 작업을 대체해 비즈니스 로직에 집중한다. • JPA : 반복적인 CRUD 작업을 대체해 간단히 DB에서 데이터를 조회한다.
+
+• QueryDSL : JPA로 해결할 수 없는 SQL은 QueryDSL로 작성한다.
+
+구조는 다음과 같습니다.    
+Board (Domain Class)      
+BoardRepository (JPA Interface)      
+BoardRepostioryCustom (QueryDSL Interface)    
+BoardRepositoryCustomImpl (QueryDSL Implements Class)    
+Datan (Domain Class)    
+DatanRepository (JPA Interface)   
+DatanRepostioryCustom (QueryDSL Interface)    
+DatanRepositoryCustomImpl (QueryDSL Implements Class)   
+Datan_Comments (Domain Class)    
+Datan_CommentsRepository (JPA Interface)   
+Datan_CommentsRepostioryCustom (QueryDSL Interface)   
+Datan_CommentsRepositoryCustomImpl (QueryDSL Implements Class)    
+
+### Spring Security (Security)
+
+Security 설정을 추가해 인가된 사용자만 특정 URL에 접근할 수 있도록 제한한다. 
+Anonymous 가 접근할 수 있어야 하는 API는 permitAll()을 선언했습니다.
+또한 ROLE_USER, ROLE_ADMIN 권한 별 URL 제한했습니다.
+
+### OAuth2.0 (Login)
+
+구글/페이스북/네이버 oauth provider를 사용해 불필요한 회원가입 프로세스를 제거한다. 
+
+### JUnit (Test)
+
+정의한 business logic에 대한 테스트 코드를 작성했습니다. 
+
+![Junit](https://user-images.githubusercontent.com/97586086/172299660-948e1129-55c8-45f3-b195-f72115f0b2a9.png)
+
