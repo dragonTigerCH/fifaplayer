@@ -36,17 +36,17 @@ public class DatanService {
 
         //중복 선수데이터체크
         Datan datan = datanRepository.findByPlayerIdAndSeasonId(player.getId(), season.getId());
-        if(datan != null){
+        if (datan != null) {
             return 0l;
         }
 
 
         //파일 static에 저장하고 UUID로 변환시키기
         UploadFile img_file = fileStore.DatanStoreFile(datanForm.getImg_file());
-        Ability ability = new Ability(datanForm.getSalaryup(),datanForm.getSpeed(),datanForm.getShooting(),datanForm.getPass()
-                ,datanForm.getDribble(),datanForm.getDefence(),datanForm.getPhysical(),datanForm.getBlocking());
+        Ability ability = new Ability(datanForm.getSalaryup(), datanForm.getSpeed(), datanForm.getShooting(), datanForm.getPass()
+                , datanForm.getDribble(), datanForm.getDefence(), datanForm.getPhysical(), datanForm.getBlocking());
 
-        return  datanRepository.save(Datan.builder()
+        return datanRepository.save(Datan.builder()
                 .ability(ability)
                 .club(datanForm.getClub())
                 .overall(ability.overall())
@@ -55,7 +55,6 @@ public class DatanService {
                 .season(season)
                 .build()).getId();
     }
-
 
 
 }

@@ -39,20 +39,19 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        log.info("userRequest.getClientRegistration() = {}",userRequest.getClientRegistration()); // registrationId로 어떤 OAuth로 로그인했는지 확인
-        log.info("userRequest.getAccessToken().getTokenValue() = {}",userRequest.getAccessToken().getTokenValue());
+        log.info("userRequest.getClientRegistration() = {}", userRequest.getClientRegistration()); // registrationId로 어떤 OAuth로 로그인했는지 확인
+        log.info("userRequest.getAccessToken().getTokenValue() = {}", userRequest.getAccessToken().getTokenValue());
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         //구글로그인 버튼 클릭 -> 구글로그인창 -> 로그인 완료 -> code를 리턴(OAuth-Client라이브러리가 받아줌) -> AccessToken 요청
         //userRequest 정보 -> loadUser함수 호출 -> 구글로부터 회원프로필 받아준다.
 
-        log.info("super.loadUser(userRequest).getAttributes() = {}",oAuth2User.getAttributes());
+        log.info("super.loadUser(userRequest).getAttributes() = {}", oAuth2User.getAttributes());
         OAuth2UserInfo oAuth2UserInfo = null;
         String nickname = null;
 
 
-
-        if (userRequest.getClientRegistration().getRegistrationId().equals("google")){
+        if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
             GoogleUserInfo googleUserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
             nickname = googleUserInfo.getName();
@@ -62,8 +61,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             FacebookUserInfo facebookUserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
             nickname = facebookUserInfo.getName();
             log.info("페이스북 로그인 요청");
-        } else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
-            oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            oAuth2UserInfo = new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
             NaverUserInfo naverUserInfo = new NaverUserInfo((Map<String, Object>) oAuth2User.getAttributes().get("response"));
             nickname = naverUserInfo.getNickname();
             log.info("네이버 로그인 요청");
@@ -79,9 +78,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String email = oAuth2UserInfo.getEmail();
         String auth = "ROLE_USER";
 
-        Member member = memberRepository.findMemberByEmailAndProviderId(email,providerId);
+        Member member = memberRepository.findMemberByEmailAndProviderId(email, providerId);
 
-        if (member != null){
+        if (member != null) {
             log.info("가입되어있는 회원 입니다.");
 
         } else {
@@ -101,11 +100,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }
 
         log.info("소셜 로그인");
-        return new PrincipalDetails(member,oAuth2User.getAttributes());
+        return new PrincipalDetails(member, oAuth2User.getAttributes());
     }
-
-
-
 
 
 }

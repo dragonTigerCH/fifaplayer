@@ -9,23 +9,23 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface Board_CommentsRepository extends JpaRepository<Board_Comments,Long> {
+public interface Board_CommentsRepository extends JpaRepository<Board_Comments, Long> {
 
-    @Query(value = "SELECT NVL(MAX(ref),0) FROM BOARD_COMMENTS b WHERE b.board_id = ?1",nativeQuery = true)
+    @Query(value = "SELECT NVL(MAX(ref),0) FROM BOARD_COMMENTS b WHERE b.board_id = ?1", nativeQuery = true)
     Long findByNvlRef(Long board_id);
 
-    @Query(value = "SELECT MAX(step) FROM BOARD_COMMENTS WHERE ref = ?1",nativeQuery = true)
+    @Query(value = "SELECT MAX(step) FROM BOARD_COMMENTS WHERE ref = ?1", nativeQuery = true)
     Long findByNvlMaxStep(Long ref);
 
-    @Query(value = "SELECT SUM(answerNum) FROM BOARD_COMMENTS WHERE ref = ?1",nativeQuery = true)
+    @Query(value = "SELECT SUM(answerNum) FROM BOARD_COMMENTS WHERE ref = ?1", nativeQuery = true)
     Long findBySumAnswerNum(Long ref);
 
     @Modifying
-    @Query(value = "UPDATE BOARD_COMMENTS SET refOrder = refOrder + 1 WHERE ref = ?1 AND refOrder > ?2",nativeQuery = true)
-    void updateRefOrderPlus(long ref,long refOrder);
+    @Query(value = "UPDATE BOARD_COMMENTS SET refOrder = refOrder + 1 WHERE ref = ?1 AND refOrder > ?2", nativeQuery = true)
+    void updateRefOrderPlus(long ref, long refOrder);
 
     @Modifying
-    @Query(value = "UPDATE BOARD_COMMENTS SET answerNum = ?2 + 1 WHERE id = ?1",nativeQuery = true)
+    @Query(value = "UPDATE BOARD_COMMENTS SET answerNum = ?2 + 1 WHERE id = ?1", nativeQuery = true)
     void updateAnswerNum(Long id, long answerNum);
 
 

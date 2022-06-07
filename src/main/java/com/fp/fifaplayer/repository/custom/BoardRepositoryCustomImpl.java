@@ -14,14 +14,13 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardRepositoryCustomImpl implements BoardRepositoryCustom{
+public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     QBoard qBoard = QBoard.board;
     QMember qMember = QMember.member;
     QBoard_Comments qBoard_comments = QBoard_Comments.board_Comments;
-
 
 
     @Override
@@ -39,8 +38,8 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom{
         QueryResults<Board_Comments> board_comments = jpaQueryFactory
                 .select(qBoard_comments)
                 .from(qBoard_comments)
-                .innerJoin(qBoard_comments.board,qBoard)
-                .innerJoin(qBoard_comments.member,qMember)
+                .innerJoin(qBoard_comments.board, qBoard)
+                .innerJoin(qBoard_comments.member, qMember)
                 .where(qBoard_comments.board.id.eq(board_id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -51,7 +50,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom{
         List<Board_Comments> content = board_comments.getResults();
         long total = board_comments.getTotal();
 
-        return new PageImpl<>(content,pageable,total);
+        return new PageImpl<>(content, pageable, total);
     }
 
 

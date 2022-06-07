@@ -26,10 +26,10 @@ public class RatingController {
 
     @PostMapping
     @ResponseBody
-    public String rating(RatingSaveForm ratingSaveForm, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String rating(RatingSaveForm ratingSaveForm, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         Member member = principalDetails.getMember();
-        String result = ratingService.ratingSave(ratingSaveForm,member);
+        String result = ratingService.ratingSave(ratingSaveForm, member);
 
         return result;
     }

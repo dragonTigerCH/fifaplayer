@@ -21,8 +21,8 @@ public class MemberEditForm {
     private String auth;
 
     @NotBlank(message = "닉네임은 필수입니다.")
-    @Size(min = 3,max = 8,message = "닉네임은 3자리부터 8자리까지입니다.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{3,8}$",message = "닉네임 유형이 맞지않습니다.")
+    @Size(min = 3, max = 8, message = "닉네임은 3자리부터 8자리까지입니다.")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{3,8}$", message = "닉네임 유형이 맞지않습니다.")
     private String nickname;
     private String password;
 

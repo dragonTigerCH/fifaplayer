@@ -10,11 +10,11 @@ import java.util.Map;
 
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class ValidCustomException extends RuntimeException{
+public class ValidCustomException extends RuntimeException {
 
     private Error[] errors;
 
-    public ValidCustomException(String defaultMessage, String field){
+    public ValidCustomException(String defaultMessage, String field) {
         this.errors = new Error[]{new Error(defaultMessage, field)};
     }
 
@@ -44,10 +44,6 @@ public class ValidCustomException extends RuntimeException{
             return field;
         }
     }
-
-
-
-
 
 
 }

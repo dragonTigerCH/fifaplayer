@@ -13,11 +13,12 @@ import java.util.*;
 
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseTimeEntity implements UserDetails{
+public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,6 @@ public class Member extends BaseTimeEntity implements UserDetails{
     private String provider;
     private String providerId;
     private String auth;
-
 
 
     //권한을 리턴

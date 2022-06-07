@@ -26,7 +26,7 @@ import java.util.Set;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Member member;
-    private Map<String,Object> attributes;
+    private Map<String, Object> attributes;
 
 
     //일반 로그인

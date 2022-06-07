@@ -120,11 +120,16 @@
 -->
 </body>
 <script th:inline="javascript">
-/*<![CDATA[*/ var msg = /*[[ ${msg} ]]*/; /*]]*/
-if(msg !=null){
-console.log(msg);
-alert(msg);
-}
+    $(document).ready(function() {
+        /*<![CDATA[*/
+        var message = /*[[${msg}]]*/;
+        /*]]>*/
+
+        if(message != null && message != ""){
+        alert(message);
+        }
+    });
+
 
 
 

@@ -6,7 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Season {
 
@@ -16,8 +17,6 @@ public class Season {
     private String name;
     @Column(name = "file")
     private String attachFile;
-
-
 
 
     @Builder

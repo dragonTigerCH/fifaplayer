@@ -15,29 +15,30 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository @Primary
+@Repository
+@Primary
 @RequiredArgsConstructor
 public class DatanRepositoryCustomImpl implements DatanRepositoryCustom {
 
 
-        private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
 
-        QDatan qDatan = QDatan.datan;
-        QSeason qSeason = QSeason.season;
-        QPlayer qPlayer = QPlayer.player;
-        QAbility qAbility = QAbility.ability;
+    QDatan qDatan = QDatan.datan;
+    QSeason qSeason = QSeason.season;
+    QPlayer qPlayer = QPlayer.player;
+    QAbility qAbility = QAbility.ability;
 
 
     @Override //검색페이지
-    public Page<Datan> findBySeasonAndPositionAndSearchPlayer(List<String> season, List<String> position, String searchPlayer,Pageable pageable) {
-        QueryResults<Datan> datans =  jpaQueryFactory.select(qDatan)
+    public Page<Datan> findBySeasonAndPositionAndSearchPlayer(List<String> season, List<String> position, String searchPlayer, Pageable pageable) {
+        QueryResults<Datan> datans = jpaQueryFactory.select(qDatan)
                 .from(qDatan)
-                .innerJoin(qDatan.season,qSeason)
-                .innerJoin(qDatan.player,qPlayer)
+                .innerJoin(qDatan.season, qSeason)
+                .innerJoin(qDatan.player, qPlayer)
                 .where(inSeasonName(season)
-                        ,inPlayerPosition(position)
-                        ,qPlayer.name.contains(searchPlayer))
+                        , inPlayerPosition(position)
+                        , qPlayer.name.contains(searchPlayer))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qDatan.overall.desc())
@@ -46,22 +47,22 @@ public class DatanRepositoryCustomImpl implements DatanRepositoryCustom {
         List<Datan> content = datans.getResults();
         long total = datans.getTotal();
 
-        return new PageImpl<>(content,pageable,total);
+        return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression inSeasonName(List<String> season){
-        if(season.isEmpty()){
+    private BooleanExpression inSeasonName(List<String> season) {
+        if (season.isEmpty()) {
             return null;
         }
         return qSeason.name.in(season);
     }
-    private BooleanExpression inPlayerPosition(List<String> position){
-        if(position.isEmpty()){
+
+    private BooleanExpression inPlayerPosition(List<String> position) {
+        if (position.isEmpty()) {
             return null;
         }
         return qPlayer.position.in(position);
     }
-
 
 
     @Override //선수 능력치 비교 Desc
@@ -69,8 +70,8 @@ public class DatanRepositoryCustomImpl implements DatanRepositoryCustom {
 
         List<Datan> datans = jpaQueryFactory.select(qDatan)
                 .from(qDatan)
-                .innerJoin(qDatan.season,qSeason)
-                .innerJoin(qDatan.player,qPlayer)
+                .innerJoin(qDatan.season, qSeason)
+                .innerJoin(qDatan.player, qPlayer)
                 .where(qDatan.id.in(datanIds)).orderBy(dataValueDesc(dataInfo)).fetch();
         return datans;
     }
@@ -79,58 +80,57 @@ public class DatanRepositoryCustomImpl implements DatanRepositoryCustom {
     public List<Datan> findByIdOrderByAsc(List<Long> datanIds, String dataInfo) {
         List<Datan> datans = jpaQueryFactory.select(qDatan)
                 .from(qDatan)
-                .innerJoin(qDatan.season,qSeason)
-                .innerJoin(qDatan.player,qPlayer)
+                .innerJoin(qDatan.season, qSeason)
+                .innerJoin(qDatan.player, qPlayer)
                 .where(qDatan.id.in(datanIds)).orderBy(dataValueAsc(dataInfo)).fetch();
         return datans;
     }
 
-    private OrderSpecifier<Integer> dataValueDesc(String dataInfo){
-        if(dataInfo.equals("d.overall")){
+    private OrderSpecifier<Integer> dataValueDesc(String dataInfo) {
+        if (dataInfo.equals("d.overall")) {
             return qDatan.overall.desc();
-        } else if (dataInfo.equals("d.salaryup")){
+        } else if (dataInfo.equals("d.salaryup")) {
             return qDatan.ability.salaryup.desc();
-        }else if (dataInfo.equals("d.speed")){
+        } else if (dataInfo.equals("d.speed")) {
             return qDatan.ability.speed.desc();
-        }else if (dataInfo.equals("d.shooting")){
+        } else if (dataInfo.equals("d.shooting")) {
             return qDatan.ability.shooting.desc();
-        }else if (dataInfo.equals("d.pass")){
+        } else if (dataInfo.equals("d.pass")) {
             return qDatan.ability.pass.desc();
-        }else if (dataInfo.equals("d.dribble")){
+        } else if (dataInfo.equals("d.dribble")) {
             return qDatan.ability.dribble.desc();
-        }else if (dataInfo.equals("d.defence")){
+        } else if (dataInfo.equals("d.defence")) {
             return qDatan.ability.defence.desc();
-        }else if (dataInfo.equals("d.physical")){
+        } else if (dataInfo.equals("d.physical")) {
             return qDatan.ability.physical.desc();
-        }else if (dataInfo.equals("d.blocking")){
+        } else if (dataInfo.equals("d.blocking")) {
             return qDatan.ability.blocking.desc();
         }
         return null;
     }
-    private OrderSpecifier<Integer> dataValueAsc(String dataInfo){
-        if(dataInfo.equals("d.overall")){
+
+    private OrderSpecifier<Integer> dataValueAsc(String dataInfo) {
+        if (dataInfo.equals("d.overall")) {
             return qDatan.overall.asc();
-        } else if (dataInfo.equals("d.salaryup")){
+        } else if (dataInfo.equals("d.salaryup")) {
             return qDatan.ability.salaryup.asc();
-        }else if (dataInfo.equals("d.speed")){
+        } else if (dataInfo.equals("d.speed")) {
             return qDatan.ability.speed.asc();
-        }else if (dataInfo.equals("d.shooting")){
+        } else if (dataInfo.equals("d.shooting")) {
             return qDatan.ability.shooting.asc();
-        }else if (dataInfo.equals("d.pass")){
+        } else if (dataInfo.equals("d.pass")) {
             return qDatan.ability.pass.asc();
-        }else if (dataInfo.equals("d.dribble")){
+        } else if (dataInfo.equals("d.dribble")) {
             return qDatan.ability.dribble.asc();
-        }else if (dataInfo.equals("d.defence")){
+        } else if (dataInfo.equals("d.defence")) {
             return qDatan.ability.defence.asc();
-        }else if (dataInfo.equals("d.physical")){
+        } else if (dataInfo.equals("d.physical")) {
             return qDatan.ability.physical.asc();
-        }else if (dataInfo.equals("d.blocking")){
+        } else if (dataInfo.equals("d.blocking")) {
             return qDatan.ability.blocking.asc();
         }
         return null;
     }
-
-
 
 
 }

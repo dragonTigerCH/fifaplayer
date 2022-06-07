@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Forgot Password</title>
+    <title>인증번호 입력</title>
 
     <!-- Custom fonts for this template-->
     <link href="/startbootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,14 +51,10 @@
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-2">인증번호 입력</h1>
-                                    <p class="mb-4" th:text="|${memberSaveForm.email}(으)로 인증번호 메일이 발송되었습니다.|" ></p>
+                                    <p class="mb-4" th:text="|${memberEmail}(으)로 인증번호 메일이 발송되었습니다.|" ></p>
                                 </div>
-                                <form class="user" th:action="@{/member/auth}" method="post" th:object="${memberSaveForm}">
+                                <form class="user" th:action="@{/member/auth}" method="post" >
                                     <input name="realNum" th:value="${num}" type="hidden" id="realNum">
-                                    <input  th:field="*{email}" type="hidden">
-                                    <input  th:field="*{password}" type="hidden">
-                                    <input th:field="*{nickname}" type="hidden">
-                                    <input  th:field="*{auth}" type="hidden">
                                     <div class="form-group">
                                         <input type="text" name="checkNum" class="form-control form-control-user"
                                                 aria-describedby="emailHelp" id="checkNum"

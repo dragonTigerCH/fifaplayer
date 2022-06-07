@@ -37,6 +37,4 @@ public class Datan_Comments {
     private Member member;
 
 
-
-
 }

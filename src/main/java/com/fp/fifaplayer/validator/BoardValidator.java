@@ -15,6 +15,5 @@ public class BoardValidator implements Validator {
         BoardForm boardForm = (BoardForm) target;
 
 
-
     }
 }

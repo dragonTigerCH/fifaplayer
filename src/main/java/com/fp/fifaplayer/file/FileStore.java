@@ -19,20 +19,20 @@ public class FileStore {
     private String datanFileDir;
 
 
-
     //파일이 여러개일때 - 시즌 이미지 파일
     public List<UploadFile> SeasonStoreFiles(List<MultipartFile> multipartFiles) throws IOException {
         List<UploadFile> storeFileList = new ArrayList<>();
-        for(MultipartFile multipartFile : multipartFiles){
-            if(!multipartFile.isEmpty()){
+        for (MultipartFile multipartFile : multipartFiles) {
+            if (!multipartFile.isEmpty()) {
                 storeFileList.add(SeasonStoreFile(multipartFile));
             }
         }
         return storeFileList;
     }
+
     //파일이 하나일때 - 시즌 이미지 파일
     public UploadFile SeasonStoreFile(MultipartFile multipartFile) throws IOException {
-        if(multipartFile.isEmpty()){
+        if (multipartFile.isEmpty()) {
             return null;
         }
 
@@ -40,11 +40,12 @@ public class FileStore {
         String storeFileName = createStoreFileName(originalFilename);
         multipartFile.transferTo(new File(getSeasonFullPath(storeFileName)));
 
-        return new UploadFile(originalFilename,storeFileName);
+        return new UploadFile(originalFilename, storeFileName);
     }
+
     //파일이 하나일때 - 데이터 이미지 파일
     public UploadFile DatanStoreFile(MultipartFile multipartFile) throws IOException {
-        if(multipartFile.isEmpty()){
+        if (multipartFile.isEmpty()) {
             return null;
         }
 
@@ -52,24 +53,27 @@ public class FileStore {
         String storeFileName = createStoreFileName(originalFilename);
         multipartFile.transferTo(new File(getDatanFullPath(storeFileName)));
 
-        return new UploadFile(originalFilename,storeFileName);
+        return new UploadFile(originalFilename, storeFileName);
     }
 
 
     //경로 - 시즌 이미지
-    public String getSeasonFullPath(String filename){
+    public String getSeasonFullPath(String filename) {
         return seasonFileDir + filename;
     }
+
     //경로 - 데이터 이미지
-    public String getDatanFullPath(String filename){
+    public String getDatanFullPath(String filename) {
         return datanFileDir + filename;
     }
+
     //UUID로 서버에 저장할 파일이름
     private String createStoreFileName(String originalFilename) {
         String uuid = UUID.randomUUID().toString();
         String ext = extractExtension(originalFilename); //확장자 뽑기
         return uuid + "." + ext;
     }
+
     //확장자 뽑기
     private String extractExtension(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");

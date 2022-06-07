@@ -9,9 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 
-
 @RequiredArgsConstructor
-public class MemberInfoValidator implements Validator{
+public class MemberInfoValidator implements Validator {
 
 
     private final MemberService memberService;
@@ -24,16 +23,16 @@ public class MemberInfoValidator implements Validator{
     @Override
     public void validate(Object target, Errors errors) {
 
-            MemberEditForm memberEditForm = (MemberEditForm) target;
+        MemberEditForm memberEditForm = (MemberEditForm) target;
 
-             System.out.println(memberService);
+        System.out.println(memberService);
 
-            if (memberService.nicknameCheck(memberEditForm.getNickname()).equals("1")){
-                errors.rejectValue("nickname",null,"닉네임이 중복입니다.");
-            }
-            if (!memberService.passwordCheck(memberEditForm.getId(),memberEditForm.getPassword())){
-                errors.rejectValue("password",null,"비밀번호가 맞지 않습니다.");
-            }
+        if (memberService.nicknameCheck(memberEditForm.getNickname()).equals("1")) {
+            errors.rejectValue("nickname", null, "닉네임이 중복입니다.");
+        }
+        if (!memberService.passwordCheck(memberEditForm.getId(), memberEditForm.getPassword())) {
+            errors.rejectValue("password", null, "비밀번호가 맞지 않습니다.");
+        }
 
     }
 }

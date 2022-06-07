@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity //스프링 시큐리티 필터가 스프링 필터체인에 등록이 된다.
 //@EnableGlobalMethodSecurity(securedEnabled = true) = @Secured 어노테이션 활성화
 //(prePostEnabled = true) = PreAuthorize,PostAuthorize 어노테이션 활성화
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -37,11 +37,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/member/register","/member/auth").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/board/**","/member/**","/dataninfo/**").hasAnyRole("USER","ADMIN")
-                    .antMatchers("/**").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/member/register", "/member/auth").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/board/**", "/member/**", "/dataninfo/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
 
                 .formLogin()
@@ -85,10 +85,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-
-
-
 
 
 }

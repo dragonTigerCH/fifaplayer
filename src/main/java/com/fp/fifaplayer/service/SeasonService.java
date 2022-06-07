@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class SeasonService {
     private final SeasonRepository seasonRepository;
 
-    public Long save(SeasonForm seasonForm,String storeFileName) {
+    public Long save(SeasonForm seasonForm, String storeFileName) {
         return seasonRepository.save(Season.builder()
                 .name(seasonForm.getName())
                 .attachFile(storeFileName)

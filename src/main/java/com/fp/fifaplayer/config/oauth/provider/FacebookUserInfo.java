@@ -2,14 +2,13 @@ package com.fp.fifaplayer.config.oauth.provider;
 
 import java.util.Map;
 
-public class FacebookUserInfo implements OAuth2UserInfo{
+public class FacebookUserInfo implements OAuth2UserInfo {
 
-    private Map<String,Object> attributes; //oAuth2User.getAttributes()
+    private Map<String, Object> attributes; //oAuth2User.getAttributes()
 
     public FacebookUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
-
 
 
     @Override
@@ -32,7 +31,7 @@ public class FacebookUserInfo implements OAuth2UserInfo{
         return (String) attributes.get("name");
     }
 
-    public String getProfile(){
+    public String getProfile() {
         return (String) attributes.get("public_profile");
     }
 }

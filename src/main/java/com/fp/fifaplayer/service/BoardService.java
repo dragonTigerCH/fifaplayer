@@ -47,7 +47,6 @@ public class BoardService {
     }
 
 
-
     public Board_Comments commentsSave(Long commentId, Board_CommentsForm board_commentsForm, PrincipalDetails principalDetails) {
 
         Board board = boardRepository.findById(board_commentsForm.getBoard_id()).orElseThrow(() -> new IllegalArgumentException("작성할 게시글이 없습니다."));
@@ -153,18 +152,18 @@ public class BoardService {
         if (comments.getAnswerNum() == 0) {
             board_commentsRepository.deleteById(commentId);
             /* 부모 댓글이 있다면 자식수(answerNum) -1 */
-                if (comments.getParentNum() != 0) {
-                    Board_Comments parentComment = board_commentsRepository.findById(comments.getParentNum())
-                            .orElseThrow(() -> new IllegalArgumentException("부모 댓글을 찾을 수 없습니다."));
+            if (comments.getParentNum() != 0) {
+                Board_Comments parentComment = board_commentsRepository.findById(comments.getParentNum())
+                        .orElseThrow(() -> new IllegalArgumentException("부모 댓글을 찾을 수 없습니다."));
 
-                    Long answerNum = parentComment.getAnswerNum();
-                    parentComment.setAnswerNum(answerNum - 1l);
-                    /* 부모 댓글의 자식을 삭제 했을때 자식이 0이면서 삭제된 댓글이면 */
-                    if (parentComment.getAnswerNum() == 0 && parentComment.isDel_yn() == true) {
-                        board_commentsRepository.deleteById(parentComment.getId());
-                        return "deleteAll";
-                    }
+                Long answerNum = parentComment.getAnswerNum();
+                parentComment.setAnswerNum(answerNum - 1l);
+                /* 부모 댓글의 자식을 삭제 했을때 자식이 0이면서 삭제된 댓글이면 */
+                if (parentComment.getAnswerNum() == 0 && parentComment.isDel_yn() == true) {
+                    board_commentsRepository.deleteById(parentComment.getId());
+                    return "deleteAll";
                 }
+            }
             return "noReply";
         } else {
             /* 자식 댓글이 있다면 */

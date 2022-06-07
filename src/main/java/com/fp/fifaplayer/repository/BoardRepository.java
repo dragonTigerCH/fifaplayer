@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface BoardRepository extends JpaRepository<Board,Long> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> findByTitle(String title);
 
-    List<Board> findByTitleOrContent(String title,String content);
+    List<Board> findByTitleOrContent(String title, String content);
 
-    Page<Board> findByTypeAndTitleContaining(String type,String title,Pageable pageable);
+    Page<Board> findByTypeAndTitleContaining(String type, String title, Pageable pageable);
 
-    Page<Board> findMyWritingByMember_id(Long id,Pageable pageable);
+    Page<Board> findMyWritingByMember_id(Long id, Pageable pageable);
 
     List<Board> findTop7ByOrderByRegdateDesc();
 }

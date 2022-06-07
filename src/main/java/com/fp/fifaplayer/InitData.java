@@ -32,9 +32,8 @@ public class InitData {
     private final AuthenticationManager authenticationManager;
 
 
-
     @PostConstruct
-    public void initDatans(){
+    public void initDatans() {
 
 
         Player parkJiSung = new Player(null, "박지성", 178, 73, "보통", "1981.02.25", "대한민국", "MF");
@@ -105,18 +104,14 @@ public class InitData {
     }
 
     @PostConstruct
-    public void initMembers(){
-        Member member1 = new Member(null,"kyu26001@naver.com", passwordEncoder.encode("chlalsrb"),"클래식",null,null,"ROLE_USER");
-        Member member2 = new Member(null,"yoho9907@gmail.com", passwordEncoder.encode("chlalsrb"),"일로그",null,null, "ROLE_ADMIN");
+    public void initMembers() {
+        Member member1 = new Member(null, "kyu26000@naver.com", passwordEncoder.encode("chlalsrb"), "클래식", null, null, "ROLE_USER");
+        Member member2 = new Member(null, "yoho9907@gmail.com", passwordEncoder.encode("chlalsrb"), "일로그", null, null, "ROLE_ADMIN");
         memberRepository.save(member1);
         memberRepository.save(member2);
 
 
-
-
     }
-
-
 
 
 }

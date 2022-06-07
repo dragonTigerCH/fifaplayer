@@ -12,7 +12,8 @@ import java.util.List;
 @Entity
 public class Rating {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int score;
@@ -23,7 +24,6 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "datan_id")
     private Datan datan;
-
 
 
 }

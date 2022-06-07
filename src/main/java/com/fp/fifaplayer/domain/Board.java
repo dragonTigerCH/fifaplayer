@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
     @Id
@@ -26,7 +27,7 @@ public class Board {
 
 
     @Builder
-    public Board(Long id, String title, String content, String type, Long hit, Long recommend,LocalDateTime regdate, Member member) {
+    public Board(Long id, String title, String content, String type, Long hit, Long recommend, LocalDateTime regdate, Member member) {
         this.id = id;
         this.title = title;
         this.content = content;

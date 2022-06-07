@@ -43,13 +43,13 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model) {
 
         //평균에서 제일 높은 순으로 데이터 가져오기
         List<Datan> datans = datanRepository.averageOrderByList();
         //평균점수 입력된 데이터가 10개미만이면 overall 순으로 10개 가져오기
-        if (datans.size() < 10){
-           datans = datanRepository.findTop10ByOrderByOverallDesc();
+        if (datans.size() < 10) {
+            datans = datanRepository.findTop10ByOrderByOverallDesc();
         }
         //실시간 선수평가
         List<Datan_Comments> datan_comments = datan_commentsRepository.findTop7ByOrderByRegdateDesc();
@@ -59,79 +59,82 @@ public class HomeController {
         List<Board_Comments> board_comments = board_commentsRepository.findTop7ByOrderByRegdateDesc();
 
 
-        model.addAttribute("boardList",boardList);
-        model.addAttribute("datans",datans);
-        model.addAttribute("board_comments",board_comments);
-        model.addAttribute("datan_comments",datan_comments);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("datans", datans);
+        model.addAttribute("board_comments", board_comments);
+        model.addAttribute("datan_comments", datan_comments);
         return "/inc/index";
     }
 
     @GetMapping("/forgot_password")
-    public String forgot_password(){
+    public String forgot_password() {
         return "/procedure/forgot_password";
     }
 
     @PostMapping("/forgot_password")
     public String sentEmail(String findMember, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (!memberRepository.findByEmail(findMember).isPresent()){
-            redirectAttributes.addFlashAttribute("msg","가입되어있지 않은 이메일 입니다.");
+        if (!memberRepository.findByEmail(findMember).isPresent()) {
+            redirectAttributes.addFlashAttribute("msg", "가입되어있지 않은 이메일 입니다.");
             return "redirect:/forgot_password";
         }
 
         int num = memberService.sendEmail(findMember);
 
-        model.addAttribute("findMember",findMember);
-        session.setAttribute("num",num);
-        session.setMaxInactiveInterval(60*5);
+        model.addAttribute("findMember", findMember);
+        session.setAttribute("num", num);
+        session.setMaxInactiveInterval(60 * 5);
+
 
         return "/procedure/sent_email";
     }
 
     @PostMapping("/sent_email")
-    public String sent_email(HttpSession session,Integer checkNum,String findMember,RedirectAttributes redirectAttributes,Model model){
+    public String sent_email(HttpSession session, Integer checkNum, String findMember, RedirectAttributes redirectAttributes, Model model) {
 
         Object realNum = (Integer) session.getAttribute("num");
 
-        if(realNum == null){
-            model.addAttribute("authFalse","인증 유효시간이 초과 되었습니다.");
-            model.addAttribute("findMember",findMember);
-            redirectAttributes.addFlashAttribute("msg","인증 유효시간이 초과 되었습니다.");
+        if (realNum == null) {
+            model.addAttribute("authFalse", "인증 유효시간이 초과 되었습니다.");
+            model.addAttribute("findMember", findMember);
+            redirectAttributes.addFlashAttribute("msg", "인증 유효시간이 초과 되었습니다.");
             return "redirect:/forgot_password";
-       } else if(realNum.equals(checkNum)){
-            model.addAttribute("findMember",findMember);
+        } else if (realNum.equals(checkNum)) {
+            model.addAttribute("findMember", findMember);
             return "/procedure/new_password";
         } else {
-            model.addAttribute("findMember",findMember);
-            model.addAttribute("authFalse","인증번호가 맞지않습니다.");
+            model.addAttribute("findMember", findMember);
+            model.addAttribute("authFalse", "인증번호가 맞지않습니다.");
             return "/procedure/sent_email";
-       }
+        }
     }
+
     @PostMapping("/new_password")
-    public String new_password(String newPw, String newPwcheck, String findMember, Model model){
+    public String new_password(String newPw, String newPwcheck, String findMember, Model model) {
         //비밀번호 정규식
         String regexp = "^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[`~!@$!%*#^?&\\(\\)\\-_=+])(?!.*[^a-zA-z0-9`~!@$!%*#^?&\\(\\)\\-_=+]).{8,16}$";
         Pattern p = Pattern.compile(regexp);
         Matcher m = p.matcher(newPw);
 
-        if(newPw.equals(newPwcheck) && m.matches()){
-            memberService.updatePassword(newPw,findMember);
+        if (newPw.equals(newPwcheck) && m.matches()) {
+            memberService.updatePassword(newPw, findMember);
             return "redirect:/login";
         } else {
-            model.addAttribute("findMember",findMember);
-            model.addAttribute("authFalse","비밀번호가 같지않거나 비밀번호 조건이 틀립니다.");
+            model.addAttribute("findMember", findMember);
+            model.addAttribute("authFalse", "비밀번호가 같지않거나 비밀번호 조건이 틀립니다.");
             return "/procedure/new_password";
         }
     }
+
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "/procedure/login";
     }
 
 
     @GetMapping("/member/user")
     @ResponseBody
-    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return "user";
     }
 
@@ -143,11 +146,8 @@ public class HomeController {
 
     @GetMapping("/err")
     public void err(HttpServletResponse response) throws IOException {
-        response.sendError(500,"500이다");
+        response.sendError(500, "500이다");
     }
-
-
-
 
 
 }

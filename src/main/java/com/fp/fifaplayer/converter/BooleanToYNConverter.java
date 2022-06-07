@@ -2,7 +2,7 @@ package com.fp.fifaplayer.converter;
 
 import javax.persistence.AttributeConverter;
 
-public class BooleanToYNConverter implements AttributeConverter<Boolean,String> {
+public class BooleanToYNConverter implements AttributeConverter<Boolean, String> {
 
     @Override
     public String convertToDatabaseColumn(Boolean attribute) {

@@ -21,14 +21,10 @@ public class Ability {
     private Integer blocking;
 
 
-    public Integer overall(){
-        return (getSpeed()+getShooting()+getPass()+getDribble()
-                +getDefence()+getPhysical()+getBlocking())/7;
+    public Integer overall() {
+        return (getSpeed() + getShooting() + getPass() + getDribble()
+                + getDefence() + getPhysical() + getBlocking()) / 7;
     }
-
-
-
-
 
 
 }

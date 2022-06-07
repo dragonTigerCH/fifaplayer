@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository @Primary
+@Repository
+@Primary
 @RequiredArgsConstructor
 public class Datan_CommentsRepositoryCustomImpl implements Datan_CommentsRepositoryCustom {
 
@@ -27,13 +28,13 @@ public class Datan_CommentsRepositoryCustomImpl implements Datan_CommentsReposit
     QDatan_Comments qDatan_comments = QDatan_Comments.datan_Comments;
 
     @Override
-    public Page<Datan_Comments> findAllByDatanOrderByCommentsOrRegdate(Long datan_id,Pageable pageable) {
+    public Page<Datan_Comments> findAllByDatanOrderByCommentsOrRegdate(Long datan_id, Pageable pageable) {
 
-        QueryResults<Datan_Comments>  datan_comments = jpaQueryFactory
+        QueryResults<Datan_Comments> datan_comments = jpaQueryFactory
                 .select(qDatan_comments)
                 .from(qDatan_comments)
-                .innerJoin(qDatan_comments.datan,qDatan)
-                .innerJoin(qDatan_comments.member,qMember)
+                .innerJoin(qDatan_comments.datan, qDatan)
+                .innerJoin(qDatan_comments.member, qMember)
                 .where(qDatan_comments.datan.id.eq(datan_id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -44,7 +45,7 @@ public class Datan_CommentsRepositoryCustomImpl implements Datan_CommentsReposit
         List<Datan_Comments> content = datan_comments.getResults();
         long total = datan_comments.getTotal();
 
-        return new PageImpl<>(content,pageable,total);
+        return new PageImpl<>(content, pageable, total);
     }
 
     @Override
@@ -52,11 +53,11 @@ public class Datan_CommentsRepositoryCustomImpl implements Datan_CommentsReposit
 
         QueryResults<Datan_Comments> datan_comments = jpaQueryFactory.select(qDatan_comments)
                 .from(qDatan_comments)
-                .innerJoin(qDatan_comments.datan,qDatan)
-                .innerJoin(qDatan_comments.member,qMember)
+                .innerJoin(qDatan_comments.datan, qDatan)
+                .innerJoin(qDatan_comments.member, qMember)
                 .where(inSeasonName(season)
-                        ,inPlayerPosition(position)
-                        ,qDatan_comments.datan.player.name.contains(searchPlayer))
+                        , inPlayerPosition(position)
+                        , qDatan_comments.datan.player.name.contains(searchPlayer))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qDatan_comments.regdate.desc())
@@ -65,17 +66,18 @@ public class Datan_CommentsRepositoryCustomImpl implements Datan_CommentsReposit
         List<Datan_Comments> content = datan_comments.getResults();
         long total = datan_comments.getTotal();
 
-        return new PageImpl<>(content,pageable,total);
+        return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression inSeasonName(List<String> season){
-        if(season.isEmpty()){
+    private BooleanExpression inSeasonName(List<String> season) {
+        if (season.isEmpty()) {
             return null;
         }
         return qDatan_comments.datan.season.name.in(season);
     }
-    private BooleanExpression inPlayerPosition(List<String> position){
-        if(position.isEmpty()){
+
+    private BooleanExpression inPlayerPosition(List<String> position) {
+        if (position.isEmpty()) {
             return null;
         }
         return qDatan_comments.datan.player.position.in(position);

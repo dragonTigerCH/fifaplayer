@@ -32,11 +32,11 @@ public class MemberValidator implements Validator {
         System.out.println(memberSaveForm);
         System.out.println(memberService.emailCheck(memberSaveForm.getEmail()));
         //검증 로직
-        if(memberService.emailCheck(memberSaveForm.getEmail()).equals("1")) {
-            bindingResult.rejectValue("email",null,"이메일이 중복입니다.");
+        if (memberService.emailCheck(memberSaveForm.getEmail()).equals("1")) {
+            bindingResult.rejectValue("email", null, "이메일이 중복입니다.");
         }
-        if(memberService.nicknameCheck(memberSaveForm.getNickname()).equals("1")) {
-            bindingResult.rejectValue("nickname",null,"닉네임이 중복입니다.");
+        if (memberService.nicknameCheck(memberSaveForm.getNickname()).equals("1")) {
+            bindingResult.rejectValue("nickname", null, "닉네임이 중복입니다.");
         }
         /*
         if(!StringUtils.hasText(memberForm.getEmail()) || !m.matches()){   // 이메일값에 무언가가 들어있지않거나 이메일 정규식과 이메일의값이 맞지않으면

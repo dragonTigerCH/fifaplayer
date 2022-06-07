@@ -15,12 +15,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class BoardForm {
 
-        private Long id;
-        @NotBlank(message = "공백은 허용하지 않습니다.")
-        @Size(min = 2,max = 30,message = "제목은 2자이상 30자 이하입니다.")
-        private String title;
-        private String content;
-        private String type;
+    private Long id;
+    @NotBlank(message = "공백은 허용하지 않습니다.")
+    @Size(min = 2, max = 30, message = "제목은 2자이상 30자 이하입니다.")
+    private String title;
+    private String content;
+    private String type;
 
 
 }

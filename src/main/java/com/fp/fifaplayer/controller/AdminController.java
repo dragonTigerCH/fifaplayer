@@ -45,34 +45,35 @@ public class AdminController {
 
 
     @GetMapping("/player/new")
-    public String players(@ModelAttribute PlayerForm playerForm,Model model){
-        model.addAttribute("playerForm",new PlayerForm());
+    public String players(@ModelAttribute PlayerForm playerForm, Model model) {
+        model.addAttribute("playerForm", new PlayerForm());
         return "/admin/player";
     }
+
     @PostMapping("/player/new")
-    public String newPlayer(@Validated @ModelAttribute PlayerForm playerForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()){
-            log.info("errors{}",bindingResult);
+    public String newPlayer(@Validated @ModelAttribute PlayerForm playerForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            log.info("errors{}", bindingResult);
             return "/admin/player";
         }
 
         playerService.save(playerForm);
-        redirectAttributes.addFlashAttribute("msg","등록되었습니다.");
+        redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
         return "redirect:/admin/player/new";
     }
 
 
     @GetMapping("/season/new")
-    public String season(@ModelAttribute SeasonForm seasomForm, Model model){
-        model.addAttribute("seasonForm",new SeasonForm());
+    public String season(@ModelAttribute SeasonForm seasomForm, Model model) {
+        model.addAttribute("seasonForm", new SeasonForm());
         return "/admin/season";
     }
 
     @PostMapping("/season/new")
     public String newSeason(@Validated @ModelAttribute SeasonForm seasonForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
 
-        if(bindingResult.hasErrors()){
-            log.info("errors{}",bindingResult);
+        if (bindingResult.hasErrors()) {
+            log.info("errors{}", bindingResult);
             return "/admin/season";
         }
 
@@ -82,42 +83,42 @@ public class AdminController {
         //List<UploadFile> imageFiles = fileStore.storFiles(seasonForm.getImageFiles()); //파일이 여러개일때
 
 
-        redirectAttributes.addFlashAttribute("msg","등록되었습니다.");
+        redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
         return "redirect:/admin/season/new";
     }
 
     @GetMapping("/datan/new")
-    public String datan(@ModelAttribute DatanForm datanForm, Model model){
+    public String datan(@ModelAttribute DatanForm datanForm, Model model) {
         List<Player> players = playerRepository.findAll();
         List<Season> seasons = seasonRepository.findAll();
 
-        model.addAttribute("players",players);
-        model.addAttribute("seasons",seasons);
-        model.addAttribute("datanForm",new DatanForm());
+        model.addAttribute("players", players);
+        model.addAttribute("seasons", seasons);
+        model.addAttribute("datanForm", new DatanForm());
 
         return "/admin/datan";
     }
 
     @PostMapping("/datan/new")
     public String newDatan(@Validated @ModelAttribute DatanForm datanForm, BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes,Model model) throws IOException {
+                           RedirectAttributes redirectAttributes, Model model) throws IOException {
 
-        if(bindingResult.hasErrors()){
-            log.info("errors{}",bindingResult);
+        if (bindingResult.hasErrors()) {
+            log.info("errors{}", bindingResult);
             List<Player> players = playerRepository.findAll();
             List<Season> seasons = seasonRepository.findAll();
-            model.addAttribute("players",players);
-            model.addAttribute("seasons",seasons);
+            model.addAttribute("players", players);
+            model.addAttribute("seasons", seasons);
             return "/admin/datan";
         }
 
         Long datan = datanService.save(datanForm);
-        if(datan == 0L){
-            redirectAttributes.addFlashAttribute("msg","이미 같은 클래스 유형의 선수가 있습니다.");
+        if (datan == 0L) {
+            redirectAttributes.addFlashAttribute("msg", "이미 같은 클래스 유형의 선수가 있습니다.");
             return "redirect:/admin/datan/new";
         }
 
-        redirectAttributes.addFlashAttribute("msg","등록되었습니다.");
+        redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
         return "redirect:/admin/datan/new";
     }
 

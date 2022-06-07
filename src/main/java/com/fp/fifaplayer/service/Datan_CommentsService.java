@@ -30,7 +30,7 @@ public class Datan_CommentsService {
         //댓글 그룹번호 NVL 함수 NULL이면 0  널이아니면 최대값
         Long commentsRef = datan_commentsRepository.findByNvlRef(datan_commentsForm.getDatan_id());
 
-        if(commentId == null){ //댓글 저장
+        if (commentId == null) { //댓글 저장
 
             Datan_Comments savedComment = datan_commentsRepository.save(Datan_Comments.builder()
                     .content(datan_commentsForm.getContent())
@@ -53,7 +53,7 @@ public class Datan_CommentsService {
             //refOrderAndUpdate 메소드 실행후 값 가져오기
             Long refOrderResult = refOrderAndUpdate(comments);
             //null이면 저장실패
-            if(refOrderResult == null){
+            if (refOrderResult == null) {
                 return null;
             }
 
@@ -71,7 +71,7 @@ public class Datan_CommentsService {
                     .build());
 
             //부모댓글의 자식컬럼수 + 1 업데이트
-            datan_commentsRepository.updateAnswerNum(comments.getId(),comments.getAnswerNum());
+            datan_commentsRepository.updateAnswerNum(comments.getId(), comments.getAnswerNum());
 
             return savedReply;
 
@@ -82,7 +82,7 @@ public class Datan_CommentsService {
     //대댓글 refOrder 로직실행 메소드
     private Long refOrderAndUpdate(Datan_Comments comment) {
 
-        Long saveStep = comment.getStep() +1l;
+        Long saveStep = comment.getStep() + 1l;
         Long refOrder = comment.getRefOrder();
         Long answerNum = comment.getAnswerNum();
         Long ref = comment.getRef();
@@ -98,13 +98,13 @@ public class Datan_CommentsService {
         step + 1 = 그룹리스트에서 max step값  refOrder + AnswerNum + 1 * UPDATE
         step + 1 > 그룹리스트에서 max step값  refOrder + 1 * UPDATE
         */
-        if(saveStep < maxStep){
-            return answerNumSum+1l;
-        } else if (saveStep == maxStep){
-            datan_commentsRepository.updateRefOrderPlus(ref,refOrder+answerNum);
+        if (saveStep < maxStep) {
+            return answerNumSum + 1l;
+        } else if (saveStep == maxStep) {
+            datan_commentsRepository.updateRefOrderPlus(ref, refOrder + answerNum);
             return refOrder + answerNum + 1l;
-        } else if(saveStep > maxStep) {
-            datan_commentsRepository.updateRefOrderPlus(ref,refOrder);
+        } else if (saveStep > maxStep) {
+            datan_commentsRepository.updateRefOrderPlus(ref, refOrder);
             return refOrder + 1l;
         }
 
@@ -113,7 +113,7 @@ public class Datan_CommentsService {
 
 
     public Page<Datan_Comments> myComments(Long member_id, Pageable pageable) {
-        return datan_commentsRepository.findMyCommentsByMember_id(member_id,pageable);
+        return datan_commentsRepository.findMyCommentsByMember_id(member_id, pageable);
     }
 
     @Transactional
@@ -126,6 +126,7 @@ public class Datan_CommentsService {
         comments.setModify_regdate(LocalDateTime.now());
 
     }
+
     @Transactional
     public String deleteComments(Long commentId) {
 
@@ -136,16 +137,16 @@ public class Datan_CommentsService {
         /* 댓글 대댓글 삭제 로직 */
 
         /* 자식 댓글이 없다면 */
-        if (comments.getAnswerNum() == 0){
+        if (comments.getAnswerNum() == 0) {
             datan_commentsRepository.deleteById(commentId);
             /* 부모 댓글이 있다면 자식수(answerNum) -1 */
-            if (comments.getParentNum() != 0){
+            if (comments.getParentNum() != 0) {
                 Datan_Comments parentComment = datan_commentsRepository.findById(comments.getParentNum())
                         .orElseThrow(() -> new IllegalArgumentException("부모 댓글을 찾을 수 없습니다."));
                 Long answerNum = parentComment.getAnswerNum();
-                parentComment.setAnswerNum(answerNum-1l);
+                parentComment.setAnswerNum(answerNum - 1l);
                 /* 부모 댓글의 자식을 삭제 했을때 자식이 0이면서 삭제된 댓글이면 */
-                if (parentComment.getAnswerNum() == 0 && parentComment.isDel_yn() == true){
+                if (parentComment.getAnswerNum() == 0 && parentComment.isDel_yn() == true) {
                     datan_commentsRepository.deleteById(parentComment.getId());
                     return "deleteAll";
                 }

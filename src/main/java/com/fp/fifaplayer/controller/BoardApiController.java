@@ -1,7 +1,6 @@
 package com.fp.fifaplayer.controller;
 
 
-
 import java.util.List;
 
 import com.fp.fifaplayer.domain.Board;
@@ -17,16 +16,15 @@ class BoardApiController {
     private BoardRepository repository;
 
 
-
     // Aggregate root
     // tag::get-aggregate-root[]
     @GetMapping("/board")
-    List<Board> all(@RequestParam(required = false,defaultValue = "")String title,
-                    @RequestParam(required = false,defaultValue = "")String content) {
-        if(StringUtils.isEmpty(title)&&StringUtils.isEmpty(content)){
+    List<Board> all(@RequestParam(required = false, defaultValue = "") String title,
+                    @RequestParam(required = false, defaultValue = "") String content) {
+        if (StringUtils.isEmpty(title) && StringUtils.isEmpty(content)) {
             return repository.findAll();
         } else {
-            return repository.findByTitleOrContent(title,content);
+            return repository.findByTitleOrContent(title, content);
         }
     }
     // end::get-aggregate-root[]

@@ -17,7 +17,7 @@ public class JpaAuditorConfig {
 
 
     @Bean
-    public AuditorAware<String> auditorProvider(){
+    public AuditorAware<String> auditorProvider() {
         return new AuditorAware<String>() {
             @Override
             public Optional<String> getCurrentAuditor() {

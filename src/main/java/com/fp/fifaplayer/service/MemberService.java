@@ -20,11 +20,11 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class MemberService {
 
-   private final MemberRepository memberRepository;
-   private final BoardRepository boardRepository;
-   private final JavaMailSender javaMailSender;
-   private final PasswordEncoder passwordEncoder;
-   private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final JavaMailSender javaMailSender;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Transactional
     public Long save(MemberSaveForm memberSaveForm) {
@@ -32,40 +32,38 @@ public class MemberService {
         memberSaveForm.setPassword(passwordEncoder.encode(memberSaveForm.getPassword())); //비밀번호 변환
 
         return memberRepository.save(Member.builder()
-                .email(memberSaveForm.getEmail())
-                .auth(memberSaveForm.getAuth())
-                .nickname(memberSaveForm.getNickname())
-                .password(memberSaveForm.getPassword())
-                .build())
+                        .email(memberSaveForm.getEmail())
+                        .auth(memberSaveForm.getAuth())
+                        .nickname(memberSaveForm.getNickname())
+                        .password(memberSaveForm.getPassword())
+                        .build())
                 .getId();
     }
 
 
-
-
-    public String emailCheck(String email){
+    public String emailCheck(String email) {
 
         String checkEmail = "0";
-        if(memberRepository.findByEmail(email).isPresent()){
-            checkEmail="1";
+        if (memberRepository.findByEmail(email).isPresent()) {
+            checkEmail = "1";
         }
         return checkEmail;
     }
 
     public String nicknameCheck(String nickname) {
         String checkNickname = "0";
-        if(memberRepository.findByNickname(nickname).isPresent()){
-            checkNickname="1";
+        if (memberRepository.findByNickname(nickname).isPresent()) {
+            checkNickname = "1";
         }
         return checkNickname;
     }
 
-    public int authEmail(MemberSaveForm memberSaveForm)  {
+    public int authEmail(MemberSaveForm memberSaveForm) {
         int num = sendEmail(memberSaveForm.getEmail());
         return num;
     }
 
-    public int sendEmail(String findMember)  {
+    public int sendEmail(String findMember) {
 
         int num = transmitEmail(findMember);
         return num;
@@ -74,12 +72,12 @@ public class MemberService {
 
 
     @Transactional
-    public void updatePassword(String newPw,String findMember) {
+    public void updatePassword(String newPw, String findMember) {
         Member member = memberRepository.findByEmail(findMember).orElseThrow(() -> {
             return new IllegalArgumentException("비밀번호 변경 실패");
         });
         //새로운 비밀번호 암호화
-       member.setPassword(passwordEncoder.encode(newPw));
+        member.setPassword(passwordEncoder.encode(newPw));
 
 
     }
@@ -94,14 +92,12 @@ public class MemberService {
         return member;
 
 
-
-
     }
 
-    public boolean passwordCheck(Long memberId,String inputPassword) {
+    public boolean passwordCheck(Long memberId, String inputPassword) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("로그인한 사용자를 찾을 수 없습니다."));
         String dbPassword = member.getPassword();
-        return passwordEncoder.matches(inputPassword,dbPassword);
+        return passwordEncoder.matches(inputPassword, dbPassword);
     }
 
 
@@ -119,7 +115,7 @@ public class MemberService {
         try {
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             mimeMessageHelper.setFrom(setfrom);
             mimeMessageHelper.setTo(tomail);
@@ -128,7 +124,7 @@ public class MemberService {
 
             javaMailSender.send(mimeMessage);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return num;

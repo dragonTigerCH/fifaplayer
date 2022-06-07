@@ -38,5 +38,4 @@ public class Datan {
     private Player player;
 
 
-
 }

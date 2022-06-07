@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface Datan_CommentsRepositoryCustom {
 
-    Page<Datan_Comments> findAllByDatanOrderByCommentsOrRegdate(Long datan_id,Pageable pageable);
+    Page<Datan_Comments> findAllByDatanOrderByCommentsOrRegdate(Long datan_id, Pageable pageable);
 
     Page<Datan_Comments> findBySeasonAndPositionAndSearchPlayer(List<String> season, List<String> position, String searchPlayer, Pageable pageable);
 }
