@@ -44,12 +44,15 @@
 ### 9. 게시글 CRUD 
 - 기본적인 게시글 CRUD 및 페이징처리     
 ![게시글 CRUD 및 댓글](https://user-images.githubusercontent.com/97586086/172296477-46543d0c-7351-4477-ba8f-442e52f533b2.png)
+![게시판](https://user-images.githubusercontent.com/97586086/172305143-6588dfa8-ef24-4678-b682-6f3e04b7a95a.png)
+
 
 ### 프로젝트 구조
 
-Spring Boot로 개발하였으며,    
-약 6개월간 해당 기술들을 학습 후 [블로그](https://velog.io/@yoho98)에 정리했습니다.    
-사용한 기술스택은 다음과 같습니다. 
+Spring Boot로 개발하였으며,     
+약 6개월간 해당 기술들을 학습 후 [블로그](https://velog.io/@yoho98)에 정리했습니다.          
+사용한 기술스택은 다음과 같습니다.      
+
 • Spring Boot   
 • Spring Security (Security)   
 • H2 (RDB)  
@@ -109,7 +112,7 @@ Gmail의 SMTP 서버 설정과
 ![Junit](https://user-images.githubusercontent.com/97586086/172299660-948e1129-55c8-45f3-b195-f72115f0b2a9.png)
 
 ### 프로젝트를 만들면서의 시행착오
-무엇보다 무한댓글로직을 만들면서 고생했던 기억이있다.   
-해서 해당로직을 블로그에 정리해두었다.    
-[게시판 댓글, 대댓글(무한댓글) 로직](https://velog.io/@yoho98/%EA%B2%8C%EC%8B%9C%EA%B8%80-%EB%8C%93%EA%B8%80-%EB%8C%80%EB%8C%93%EA%B8%80%EB%AC%B4%ED%95%9C%EB%8C%93%EA%B8%80-%EB%A1%9C%EC%A7%81)
+무엇보다 무한댓글로직을 만들면서 고생했던 기억이 있습니다.    
+해서 해당로직을 블로그에 정리해두었습니다.     
+- [게시판 댓글, 대댓글(무한댓글) 로직](https://velog.io/@yoho98/%EA%B2%8C%EC%8B%9C%EA%B8%80-%EB%8C%93%EA%B8%80-%EB%8C%80%EB%8C%93%EA%B8%80%EB%AC%B4%ED%95%9C%EB%8C%93%EA%B8%80-%EB%A1%9C%EC%A7%81)
 
