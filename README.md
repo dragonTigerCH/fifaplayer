@@ -47,7 +47,8 @@
 
 ### 프로젝트 구조
 
-Spring Boot로 개발하였으며,
+Spring Boot로 개발하였으며,    
+약 6개월간 해당 기술들을 학습 후 [블로그](https://velog.io/@yoho98)에 정리했습니다.    
 사용한 기술스택은 다음과 같습니다. 
 • Spring Boot   
 • Spring Security (Security)   
