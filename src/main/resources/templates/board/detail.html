@@ -13,6 +13,7 @@
                 <h4 class="m-0 font-weight-bold text-black" th:text="${board.title}"></h4>
             </div>
             <div class="card-body">
+                <span class="float-right font-weight-bold text-info text-uppercase" th:text="|${board.member.nickname}|"></span>
                 <small class="m-0 font-weight-bold text-secondary" th:text="${board.type} == 'tip' ? '팁과 노하우 게시판' : '자유 게시판'"></small>
                 <hr>
                 <div class="card-body" th:text="${board.content}">
@@ -28,10 +29,10 @@
     <div style="text-align:right;" class="mb-3">
         <a class="btn btn-primary" th:if="${board.type}=='tip'" th:href="@{/board/tip}">목록</a>
         <a class="btn btn-primary" th:if="${board.type}=='free'"  th:href="@{/board/free}">목록</a>
-        <a class="btn btn-info" th:href="@{/board/edit(id=${board.id})}">수정</a>
+        <a class="btn btn-info" th:if="${board.member.id} == ${member.id}" th:href="@{/board/edit(id=${board.id})}">수정</a>
         <form th:action="@{/board/delete}" method="post" class="d-inline" id="delfrm">
             <input type="hidden" th:value="${board.id}" name="deleteId">
-            <a class="btn btn-danger" href="#" th:onclick="deleteBoard()">삭제</a>
+            <a class="btn btn-danger" th:if="${board.member.id} == ${member.id}" href="#" th:onclick="deleteBoard()">삭제</a>
 
         </form>
     </div>
