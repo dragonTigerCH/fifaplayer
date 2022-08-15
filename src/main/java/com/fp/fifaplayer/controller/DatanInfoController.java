@@ -68,7 +68,7 @@ public class DatanInfoController {
         model.addAttribute("datan_Comments", datan_Comments);
         model.addAttribute("searchForm", new SearchForm());
 
-        return "/dataninfo/evaluation";
+        return "dataninfo/evaluation";
     }
 
     @GetMapping("/comparison")
@@ -96,7 +96,7 @@ public class DatanInfoController {
         model.addAttribute("datans", datans);
         model.addAttribute("searchForm", new SearchForm());
 
-        return "/dataninfo/comparison";
+        return "dataninfo/comparison";
     }
 
     @GetMapping("/comparison/orderby")
@@ -119,7 +119,7 @@ public class DatanInfoController {
         }
         model.addAttribute("datans", datans);
 
-        return "/dataninfo/comparison :: fragment-datanValue";
+        return "dataninfo/comparison :: fragment-datanValue";
     }
 
 

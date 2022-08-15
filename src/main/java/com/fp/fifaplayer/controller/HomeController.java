@@ -63,12 +63,12 @@ public class HomeController {
         model.addAttribute("datans", datans);
         model.addAttribute("board_comments", board_comments);
         model.addAttribute("datan_comments", datan_comments);
-        return "/inc/index";
+        return "inc/index";
     }
 
     @GetMapping("/forgot_password")
     public String forgot_password() {
-        return "/procedure/forgot_password";
+        return "procedure/forgot_password";
     }
 
     @PostMapping("/forgot_password")
@@ -86,7 +86,7 @@ public class HomeController {
         session.setMaxInactiveInterval(60 * 5);
 
 
-        return "/procedure/sent_email";
+        return "procedure/sent_email";
     }
 
     @PostMapping("/sent_email")
@@ -101,11 +101,11 @@ public class HomeController {
             return "redirect:/forgot_password";
         } else if (realNum.equals(checkNum)) {
             model.addAttribute("findMember", findMember);
-            return "/procedure/new_password";
+            return "procedure/new_password";
         } else {
             model.addAttribute("findMember", findMember);
             model.addAttribute("authFalse", "인증번호가 맞지않습니다.");
-            return "/procedure/sent_email";
+            return "procedure/sent_email";
         }
     }
 
@@ -122,13 +122,13 @@ public class HomeController {
         } else {
             model.addAttribute("findMember", findMember);
             model.addAttribute("authFalse", "비밀번호가 같지않거나 비밀번호 조건이 틀립니다.");
-            return "/procedure/new_password";
+            return "procedure/new_password";
         }
     }
 
     @GetMapping("/login")
     public String login() {
-        return "/procedure/login";
+        return "procedure/login";
     }
 
 

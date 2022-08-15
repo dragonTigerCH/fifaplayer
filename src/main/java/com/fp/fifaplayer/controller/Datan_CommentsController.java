@@ -68,7 +68,7 @@ public class Datan_CommentsController {
         model.addAttribute("datan_commentForm", new Datan_CommentsForm());
         model.addAttribute("searchForm", new SearchForm());
 
-        return "/dataninfo/player";
+        return "dataninfo/player";
     }
 
     //댓글  "/player"   대댓글 "/player/{commentId}"
@@ -100,7 +100,7 @@ public class Datan_CommentsController {
         model.addAttribute("datan_commentForm", datan_commentsForm);
 
 
-        return "/dataninfo/player :: datan_commentList";
+        return "dataninfo/player :: datan_commentList";
     }
 
 

@@ -47,14 +47,14 @@ public class AdminController {
     @GetMapping("/player/new")
     public String players(@ModelAttribute PlayerForm playerForm, Model model) {
         model.addAttribute("playerForm", new PlayerForm());
-        return "/admin/player";
+        return "admin/player";
     }
 
     @PostMapping("/player/new")
     public String newPlayer(@Validated @ModelAttribute PlayerForm playerForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.info("errors{}", bindingResult);
-            return "/admin/player";
+            return "admin/player";
         }
 
         playerService.save(playerForm);
@@ -66,7 +66,7 @@ public class AdminController {
     @GetMapping("/season/new")
     public String season(@ModelAttribute SeasonForm seasomForm, Model model) {
         model.addAttribute("seasonForm", new SeasonForm());
-        return "/admin/season";
+        return "admin/season";
     }
 
     @PostMapping("/season/new")
@@ -74,7 +74,7 @@ public class AdminController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors{}", bindingResult);
-            return "/admin/season";
+            return "admin/season";
         }
 
         UploadFile attachFile = fileStore.SeasonStoreFile(seasonForm.getAttachFile()); //파일한개일때 서버에 저장하기
@@ -96,7 +96,7 @@ public class AdminController {
         model.addAttribute("seasons", seasons);
         model.addAttribute("datanForm", new DatanForm());
 
-        return "/admin/datan";
+        return "admin/datan";
     }
 
     @PostMapping("/datan/new")
@@ -109,7 +109,7 @@ public class AdminController {
             List<Season> seasons = seasonRepository.findAll();
             model.addAttribute("players", players);
             model.addAttribute("seasons", seasons);
-            return "/admin/datan";
+            return "admin/datan";
         }
 
         Long datan = datanService.save(datanForm);

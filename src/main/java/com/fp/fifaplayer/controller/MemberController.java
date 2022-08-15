@@ -81,7 +81,7 @@ public class MemberController {
         session.setAttribute("memberSaveForm", memberSaveForm);
         model.addAttribute("memberEmail", memberSaveForm.getEmail());
 
-        return "/member/auth";
+        return "member/auth";
     }
 
     //회원가입 인증
@@ -101,7 +101,7 @@ public class MemberController {
         } else {
             model.addAttribute("memberEmail", memberSaveForm.getEmail());
             model.addAttribute("authFalse", "인증번호가 맞지않습니다.");
-            return "/member/auth";
+            return "member/auth";
         }
     }
 
@@ -142,7 +142,7 @@ public class MemberController {
         model.addAttribute("myBoard_Comments", myBoard_Comments);
         model.addAttribute("memberEditForm", memberEditForm);
 
-        return "/member/info";
+        return "member/info";
     }
 
     @PostMapping("/info")
@@ -181,7 +181,7 @@ public class MemberController {
             model.addAttribute("memberEditForm", memberEditForm);
             model.addAttribute("myBoard_Comments", myBoard_Comments);
 
-            return "/member/info";
+            return "member/info";
         }
 
         Member member = memberService.editNickname(principalDetails, memberEditForm.getNickname());
@@ -201,7 +201,7 @@ public class MemberController {
 
         model.addAttribute("newPasswordForm", new NewPasswordForm());
         model.addAttribute("member", principalDetails.getMember());
-        return "/member/new_password";
+        return "member/new_password";
     }
 
     @PostMapping("/new_password")
@@ -214,7 +214,7 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             log.info("errors = {}", bindingResult);
             model.addAttribute("member", principalDetails.getMember());
-            return "/member/new_password";
+            return "member/new_password";
         }
 
         String newPassword = newPasswordForm.getPassword();

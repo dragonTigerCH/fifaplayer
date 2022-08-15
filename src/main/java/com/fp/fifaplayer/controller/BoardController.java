@@ -51,7 +51,7 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
 
         model.addAttribute("boardTip", boardTip);
-        return "/board/tip";
+        return "board/tip";
     }
 
     @GetMapping("/free")
@@ -69,7 +69,7 @@ public class BoardController {
 
         model.addAttribute("boardFree", boardFree);
 
-        return "/board/free";
+        return "board/free";
     }
 
 
@@ -79,7 +79,7 @@ public class BoardController {
         model.addAttribute("choice", choice);
         model.addAttribute("boardForm", new BoardForm());
 
-        return "/board/form";
+        return "board/form";
     }
 
     @PostMapping("/form")
@@ -117,7 +117,7 @@ public class BoardController {
         model.addAttribute("board_commentForm", new Board_CommentsForm());
 
 
-        return "/board/detail";
+        return "board/detail";
     }
 
     //댓글  "/detail"   대댓글 "/detail/{commentId}"
@@ -149,7 +149,7 @@ public class BoardController {
         model.addAttribute("board_comments", board_comments);
         model.addAttribute("board_commentForm", board_commentsForm);
 
-        return "/board/detail :: board_commentList";
+        return "board/detail :: board_commentList";
     }
 
     //댓글,대댓글 업데이트
@@ -175,7 +175,7 @@ public class BoardController {
     public String edit(Model model, Long id) {
         Board board = boardRepository.findById(id).orElse(null);
         model.addAttribute("board", board);
-        return "/board/edit";
+        return "board/edit";
     }
 
     @PostMapping("/edit")
