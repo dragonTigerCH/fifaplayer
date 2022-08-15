@@ -102,7 +102,6 @@ public class DatanInfoController {
     @GetMapping("/comparison/orderby")
     public String comparison_orderBy(@RequestParam(value = "datanData[]") String[] datanData, String dataInfo, String orderBy, Model model) {
 
-        log.info("datanData = {}", datanData);
 
         //받아온 문자열배열 값 long배열로 변환후 리스트변환
         List<Long> datanIds = new ArrayList<Long>();
