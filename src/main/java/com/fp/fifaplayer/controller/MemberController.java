@@ -72,7 +72,7 @@ public class MemberController {
         //검증 실패하면 다시 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors= {}", bindingResult);
-            return "/member/register";
+            return "member/register";
         }
         //성공 로직
         int num = memberService.authEmail(memberSaveForm);
