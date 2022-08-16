@@ -93,7 +93,7 @@ public class MemberController {
 
         if (realNum == null) {
             redirectAttributes.addFlashAttribute("msg", "인증 시간이 초과되었습니다.");
-            return "reditect:/member/register";
+            return "redirect:/member/register";
         } else if (realNum.equals(checkNum)) {
             memberService.save(memberSaveForm);
             redirectAttributes.addFlashAttribute("msg", "회원가입이 완료되었습니다.");
